@@ -173,38 +173,41 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="TH_quick_view">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function quick_view_click(id) {
+            $.ajax({
+                url: window.location.origin + "/tim-kiem/gio-hang/" + id,
+                type: "GET",
+                success: (data) => {
+                    var kq = (JSON.parse(data))[0]
+                    console.log(kq)
+                    TH_quick_view.innerHTML += `
                     <div class="page product-details-page">
                         <div class="item-container col d-md-inline-flex d-md-flex px-0">
                             <!--product pictures-->
                             <div class="gallery col-12 col-md-6 pt-lg-0 pt-3 px-0">
-                                <div class="zoom picture-5c861fb357d5a11c90420fee mb-1"
-                                    style="position: relative; overflow: hidden;">
-                                    <a title="Picture of Apple MacBook Pro 13-inch"
-                                        id="main-product-img-lightbox-anchor-5c861fb357d5a11c90420fee">
-                                        <img class="img-fluid" alt="Picture of Apple MacBook Pro 13-inch"
-                                            src="http://demo.grandnode.com/content/images/thumbs/5c861fb357d5a11c90421012_apple-macbook-pro-13-inch_550.jpeg"
-                                            data-fullsize="http://demo.grandnode.com/content/images/thumbs/5c861fb357d5a11c90421012_apple-macbook-pro-13-inch.jpeg"
-                                            title="Picture of Apple MacBook Pro 13-inch" itemprop="image"
-                                            id="main-product-img-5c861fb357d5a11c90420fee">
-                                    </a>
-                                </div>
+                                <img class="img-fluid" alt="${kq.ten_sp}"
+                                    src="/static/images/${kq.loaisp[0].thu_muc_hinh}/${kq.hinh_anh}">
                             </div>
                             <div class="overview col-12 col-md-6">
                                 <h2 class="generalTitle" itemprop="name">
-                                    Apple MacBook Pro 13-inch
+                                    ${kq.ten_sp}
                                 </h2>
                                 <div class="short-description generalMarginSupporter">
-                                    A groundbreaking Retina display. A new force-sensing trackpad. All-flash
-                                    architecture. Powerful dual-core and quad-core Intel processors. Together,
-                                    these features take the notebook to a new level of performance. And they
-                                    will do the same for you in everything you create.
+                                ${kq.noi_dung}
                                 </div>
                                 <!--product reviews-->
                                 <div class="quickview-reviews">
-                                    <div class="product-reviews-overview d-inline-flex align-items-center flex-wrap"
-                                        itemprop="aggregateRating" itemscope=""
-                                        itemtype="http://schema.org/AggregateRating">
+                                    <div class="product-reviews-overview d-inline-flex align-items-center flex-wrap">
                                         <div class="product-review-box d-inline-block">
                                             <div class="rating">
                                                 <div class="rating-ghost">
@@ -219,49 +222,42 @@
 
                                 </div>
                                 <div class="manufacturers generalMarginSupporter">
-                                    <span class="label">Manufacturer:</span>
+                                    <span class="label">Thương hiệu:</span>
                                     <span class="value">
-                                        <a href="/apple">Apple</a>
+                                    ${kq.thuonghieu[0].ten_thuong_hieu}
                                     </span>
                                 </div>
                                 <!--availability-->
                                 <div class="availability generalMarginSupporter">
                                     <div class="stock">
-                                        <span class="label">Availability:</span>
-                                        <span class="value" id="stock-availability-value-5c861fb357d5a11c90420fee">
-                                            <link itemprop="availability" href="http://schema.org/InStock">
-                                            In stock
+                                        <span class="label">Tình trạng:</span>
+                                        <span class="value">
+                                            còn hàng
                                         </span>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 px-0">
                                     <span itemprop="price" content="1800.00"
-                                        class="actual-price price-value-5c861fb357d5a11c90420fee">
-                                        <strong class="actual-price">25,000,000 VNĐ</strong>
+                                        class="actual-price">
+                                        <strong class="actual-price">${(kq.gia_ban).toLocaleString()} VNĐ</strong>
                                     </span>
                                 </div>
                                 <div class="col-lg-12 generalAdToCart px-0 my-3">
                                     <div class="btn-group product-simple-share my-2 d-inline-flex flex-wrap">
-                                        <label for="" class="sr-only">Add to cart</label>
-                                        <input class="form-control qty-input text-center" type="number" value="1">
-                                        <button type="button" class="btn btn-primary">
-                                            <span class="material-icons mat d-sm-block">shopping_cart</span><span
-                                                class="d-lg-block d-none">Thêm vào giỏ</span>
-                                        </button>
+                                    <input type="button" id="${kq._id}" class="btn btn-info btnAdd w-100"
+                                        value="Thêm vào giỏ">
                                     </div>
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+                    `
+                }
+
+            })
+        }
+    </script>
     <script>
     if(sessionStorage.getItem('gio_hang') != null)
 	{
@@ -294,6 +290,58 @@
         });
     </script>
     <script>
+	if(sessionStorage.getItem('khach_hang_Ten')==null || sessionStorage.getItem('khach_hang_Id')==null)
+	{
+		TH_dangnhap_dangxuat.innerHTML=`
+        <a class="nav-link mr-2" href="/dangnhap">
+            <span class="hl-label">
+                <span class="material-icons mat">
+                    lock_open
+                </span>
+            </span>
+            <span class="d-flex align-items-center mobile-desc">Đăng nhập</span>
+        </a>
+        <a class="nav-link ml-2" href="/dangky">
+            <span class="hl-label">
+                <span class="material-icons mat">
+                    lock
+                </span>
+            </span>
+            <span class="d-flex align-items-center mobile-desc">Đăng ký</span>
+        </a>
+		`
+	}
+	else
+	{
+        TH_dangnhap_dangxuat.innerHTML=`
+            <a class="nav-link mr-2" href="/users">
+                <span class="hl-label">
+                    <span class="material-icons mat">
+                        perm_identity
+                    </span>
+                </span>
+                <span class="d-flex align-items-center mobile-desc">Chào: ${sessionStorage.getItem('khach_hang_Ten')}</span>
+            </a>
+            <a class="nav-link ml-2" href="#" id="TH_dang_xuat" onclick="dangxuat()">
+                <span class="hl-label">
+                    <span class="material-icons mat">
+                        lock
+                    </span>
+                </span>
+                <span class="d-flex align-items-center mobile-desc">Đăng xuất</span>
+            </a>
+		`
+	}
+	function dangxuat(){
+		sessionStorage.removeItem('khach_hang_Ten')
+		sessionStorage.removeItem('khach_hang_Id')
+		sessionStorage.removeItem('khach_hang_Email')
+		sessionStorage.removeItem('khach_hang_Dia_chi')
+		sessionStorage.removeItem('khach_hang_Dien_thoai')
+		window.location=window.location.origin
+	}
+    </script>
+    <script>
     function kiem_tra_tim_kiem()
     {
         var tim_kiem=document.getElementById("keyword")
@@ -307,6 +355,94 @@
             window.location='/tim-kiem/'+tim_kiem.value.trim()
         }
     }
+    function kiem_tra_thong_tin_dang_ky()
+    {
+        var ten_khach_hang=document.getElementById("dang_ky_ten_khach_hang")
+        var dia_chi=document.getElementById("dang_ky_dia_chi")
+        var dien_thoai=document.getElementById("dang_ky_dien_thoai")
+        var ten_dang_nhap=document.getElementById("dang_ky_ten_dang_nhap")
+        var email=document.getElementById("dang_ky_email")
+        var mat_khau=document.getElementById("dang_ky_mat_khau")
+        var nhap_lai_mat_khau=document.getElementById("dang_ky_nhap_lai_mat_khau")
+
+        if(ten_khach_hang.value.trim()=="")
+        {
+            alert("Vui lòng nhập họ tên")
+            ten_khach_hang.focus()
+            return false
+        }
+
+        if(dia_chi.value.trim()=="")
+        {
+            alert("Vui lòng nhập địa chỉ")
+            dia_chi.focus()
+            return false
+        }
+
+        if(dien_thoai.value.trim()=="")
+        {
+            alert("Vui lòng nhập số diện thoại")
+            dien_thoai.focus()
+            return false
+        }
+
+        if(isNaN(dien_thoai.value) || (dien_thoai.value.length)>11)
+        {
+            alert("Số điện thoại không hợp lệ")
+            dien_thoai.focus()
+            return false
+        }
+
+        if(ten_dang_nhap.value.trim()=="")
+        {
+            alert("Vui lòng nhập tên đăng nhập")
+            ten_dang_nhap.focus()
+            return false
+        }
+
+        if(email.value.trim()=="")
+        {
+            alert("Vui lòng nhập email")
+            email.focus()
+            return false
+        }
+
+        if(mat_khau.value.trim()=="")
+        {
+            alert("Vui lòng nhập mật khẩu")
+            mat_khau.focus()
+            return false
+        }
+
+        if(nhap_lai_mat_khau.value.trim()!=mat_khau.value.trim())
+        {
+            alert("Mật khẩu không trùng khớp")
+            nhap_lai_mat_khau.focus()
+            return false
+        }
+
+        return true
+    }
+    
+    function kiem_tra_thong_tin_dang_nhap()
+		{
+			var ten_dang_nhap=document.getElementById("dang_nhap_email")
+			var mat_khau=document.getElementById("dang_nhap_mat_khau")
+			if(ten_dang_nhap.value.trim()=="")
+			{
+				alert("Vui lòng nhập tên đăng nhập")
+				ten_dang_nhap.focus()
+				return false
+			}
+			if(mat_khau.value.trim()=="")
+			{
+				alert("Vui lòng nhập mật khẩu")
+				mat_khau.focus()
+				return false
+			}
+
+			return true
+		}
     </script>
     <script type="text/javascript">
 		$(document).ready(function() {
