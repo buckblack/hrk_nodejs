@@ -7,9 +7,6 @@ cl_thuong_hieu='thuong_hieu'
 cl_hoa_don='hoa_don'
 cl_san_pham='san_pham'
 cl_email_nhan_tin='email_nhan_tin'
-router.get('/firebase-messaging-sw.js', function(req,res,next){
-  res.render('push_message',{})
-})
 router.get('/', async function (req, res, next) {
   let db = await xl_mongo.Get();
   var thuonghieu;

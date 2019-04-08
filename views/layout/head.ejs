@@ -19,10 +19,16 @@
     <script type="text/javascript" src="/js/pnotify.custom.min.js"></script>
     <script src="/js/socket.io.js"></script>
     <script src="/js/myscript.js"></script>
-    <script src="/js/firebase-messaging-sw.js"></script>
-    <script type="text/javascript">
-        var subscribersSiteId = 'e04c1805-54d9-4303-a07b-ee49647bb1e6';
+    <script type="text/javascript" data-cfasync="false">
+        var _foxpush = _foxpush || [];
+        _foxpush.push(['_setDomain', 'banhangdientuherokuappcom']);
+        (function(){
+            var foxscript = document.createElement('script');
+            foxscript.src = '//cdn.foxpush.net/sdk/foxpush_SDK_min.js';
+            foxscript.type = 'text/javascript';
+            foxscript.async = 'true';
+            var fox_s = document.getElementsByTagName('script')[0];
+            fox_s.parentNode.insertBefore(foxscript, fox_s);})();
     </script>
-    <script type="text/javascript" src="https://cdn.subscribers.com/assets/subscribers.js"></script>
     
 </head>
