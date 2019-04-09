@@ -4,7 +4,7 @@
 <% include thuvien/bodau %>
 <% include layout/thanh_trang_thai %>
 <script>
-    if(sessionStorage.getItem('khach_hang_Ten')!=null && sessionStorage.getItem('khach_hang_Id')!=null)
+    if(localStorage.getItem('khach_hang_Ten')!=null && localStorage.getItem('khach_hang_Id')!=null)
     {
         window.location=window.location.origin
     }
@@ -111,11 +111,11 @@ btn_dang_nhap.onclick=()=>{
 					data=JSON.parse(data)
 					if(data.errorCode==0)
 					{
-						sessionStorage.setItem('khach_hang_Id',data.khach_hang_Id)
-						sessionStorage.setItem('khach_hang_Ten',data.khach_hang_Ten)
-						sessionStorage.setItem('khach_hang_Email',data.khach_hang_Email)
-						sessionStorage.setItem('khach_hang_Dia_chi',data.khach_hang_Dia_chi)
-						sessionStorage.setItem('khach_hang_Dien_thoai',data.khach_hang_Dien_thoai)
+						localStorage.setItem('khach_hang_Id',data.khach_hang_Id)
+						localStorage.setItem('khach_hang_Ten',data.khach_hang_Ten)
+						localStorage.setItem('khach_hang_Email',data.khach_hang_Email)
+						localStorage.setItem('khach_hang_Dia_chi',data.khach_hang_Dia_chi)
+						localStorage.setItem('khach_hang_Dien_thoai',data.khach_hang_Dien_thoai)
 						setTimeout(() => {
 							window.location=window.location.origin+"/giohang"
     					}, 1500);

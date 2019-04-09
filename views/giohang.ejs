@@ -85,7 +85,7 @@
 <script>
 	var tongtien = 0;
 	async function doi_so_luong(id, giaban) {
-		var gio_hang = JSON.parse(sessionStorage.getItem('gio_hang'));
+		var gio_hang = JSON.parse(localStorage.getItem('gio_hang'));
 		var sl = document.getElementById('so_luong_' + id).value
 		if (Number(sl) <= 0) {
 			alert('Số lượng không hợp lệ!')
@@ -99,23 +99,23 @@
 				tinh_tong_tien.innerHTML = tongtien.toLocaleString('en-GB')
 			}
 		});
-		sessionStorage.setItem('gio_hang', JSON.stringify(gio_hang))
+		localStorage.setItem('gio_hang', JSON.stringify(gio_hang))
 	}
 
 	function dat_hang()
 	{
 		dong_xac_nhan.click();
 		btn_thong_bao.click();
-		if(sessionStorage.getItem('khach_hang_Ten')==null)
+		if(localStorage.getItem('khach_hang_Ten')==null)
 		{
 			window.location=window.location.origin + "/dangnhap"
 		}
 		else
 		{
-			var ct=JSON.parse(sessionStorage.getItem('gio_hang'))
+			var ct=JSON.parse(localStorage.getItem('gio_hang'))
 			var form_data={
-			'khach_hang_Id':sessionStorage.getItem('khach_hang_Id'),
-			'chi_tiet' : sessionStorage.getItem('gio_hang')
+			'khach_hang_Id':localStorage.getItem('khach_hang_Id'),
+			'chi_tiet' : localStorage.getItem('gio_hang')
 			}
 			$.ajax({
 			url: window.location.origin + "/thanh-toan",
@@ -125,9 +125,9 @@
 				if(data.errorCode==0)
 				TH_thong_bao.innerHTML=`Đặt hàng thành công`
 				var socket = io();
-				socket.emit("user-send-message",`${data.ma_hd} - ${sessionStorage.getItem('khach_hang_Ten')}`);
+				socket.emit("user-send-message",`${data.ma_hd} - ${localStorage.getItem('khach_hang_Ten')}`);
 				setTimeout(() => {
-					sessionStorage.removeItem('gio_hang')
+					localStorage.removeItem('gio_hang')
 					window.location = "/giohang"
 				}, 1500);
 				
@@ -139,20 +139,20 @@
 
 	function xoa_gio_hang() {
 		if (confirm("Xác nhận xoá giỏ hàng")) {
-			sessionStorage.removeItem('gio_hang')
+			localStorage.removeItem('gio_hang')
 			window.location = "/giohang"
 		}
 
 	}
 
 	function xoa_1_gio_hang(id) {
-		gio_hang = JSON.parse(sessionStorage.getItem('gio_hang'));
+		gio_hang = JSON.parse(localStorage.getItem('gio_hang'));
 		gio_hang = gio_hang.filter(x => x.id != id)
 		if (gio_hang.length == 0) {
-			sessionStorage.removeItem('gio_hang')
+			localStorage.removeItem('gio_hang')
 			window.location = "/giohang"
 		} else {
-			sessionStorage.setItem('gio_hang', JSON.stringify(gio_hang))
+			localStorage.setItem('gio_hang', JSON.stringify(gio_hang))
 			window.location = "/giohang"
 		}
 	}
@@ -185,12 +185,12 @@
 
 		})
 	}
-	if (sessionStorage.getItem('gio_hang') == null) {
+	if (localStorage.getItem('gio_hang') == null) {
 		checkout.innerHTML = `
 	<p align="center" style="color:#F00; font-size:24px; font-weight:bold"><br>Chưa có sản phẩm nào trong giỏ</p>
 	`
 	} else {
-		var gio_hang = JSON.parse(sessionStorage.getItem('gio_hang'));
+		var gio_hang = JSON.parse(localStorage.getItem('gio_hang'));
 		var stt = 1;
 		gio_hang.forEach(row => {
 			doc_san_pham(row.id, stt, row.so_luong)
