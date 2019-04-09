@@ -154,7 +154,7 @@
 											<div class="rating-ghost">
 												☆☆☆☆☆
 											</div>
-											<div class="rating-real" style="width: 0%">
+											<div class="rating-real" style="width: <%= diem_trung_binh(sanpham[i].diem_so)%>%">
 												★★★★★
 											</div>
 										</div>
@@ -236,7 +236,7 @@ function xuat_danh_sach(arr)
 									<div class="rating-ghost">
 										☆☆☆☆☆
 									</div>
-									<div class="rating-real" style="width: 100%">
+									<div class="rating-real" style="width: ${diem_trung_binh(row.diem_so)}%">
 										★★★★★
 									</div>
 								</div>
