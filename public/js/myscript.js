@@ -154,15 +154,15 @@ function them_1_gio_hang(id)
                 btn.style.backgroundColor="#0091b5"
                 },1000)
             var gio_hang;
-            if (localStorage.getItem('gio_hang') == null) {
+            if (sessionStorage.getItem('gio_hang') == null) {
                 gio_hang = [];
             } else {
-                gio_hang = JSON.parse(localStorage.getItem('gio_hang'));
+                gio_hang = JSON.parse(sessionStorage.getItem('gio_hang'));
             }
             if(gio_hang.find(x=>x.id==id)==undefined)
             {
                 gio_hang.push({'id':id,'so_luong':1})
-                localStorage.setItem('gio_hang', JSON.stringify(gio_hang))
+                sessionStorage.setItem('gio_hang', JSON.stringify(gio_hang))
                 so_san_pham.innerHTML=gio_hang.length
             }
         }

@@ -3,7 +3,7 @@
 <% include ../layout/nav %>
 <% include ../layout/thanh_trang_thai %>
 <script>
-  if(localStorage.getItem('khach_hang_Ten')==null || localStorage.getItem('khach_hang_Id')==null)
+  if(sessionStorage.getItem('khach_hang_Ten')==null || sessionStorage.getItem('khach_hang_Id')==null)
     {
         window.location=window.location.origin
     }
@@ -82,7 +82,7 @@
      TH_thongbao.innerHTML='Đang xử lý...'
       modal_thongbao.click();
      var form_data={
-			'id' : localStorage.getItem('khach_hang_Id'),
+			'id' : sessionStorage.getItem('khach_hang_Id'),
       'mat_khau_moi' : mat_khau_moi.value.trim(),
       'mat_khau_hien_tai' : mat_khau_hien_tai.value.trim()
 		}

@@ -312,7 +312,7 @@
                                 </div>
                                 <div class="col-lg-12 generalAdToCart px-0 my-3">
                                     <div class="btn-group product-simple-share my-2 d-inline-flex flex-wrap">
-                                    <input type="button" id="add_${kq._id}" onclick="them_1_gio_hang('${kq._id}')" class="btn btn-info w-100"
+                                    <input type="button" id="add_${kq._id}" onclick="them_1_gio_hang('${kq._id}')" class="btn btn-info btnAdd w-100"
                                         value="Thêm vào giỏ">
                                     </div>
                                 </div>
@@ -328,7 +328,7 @@
     </script>
     <script>
     $(document).ready(function () {
-        if(localStorage.getItem('khach_hang_Ten')==null || localStorage.getItem('khach_hang_Id')==null)
+        if(sessionStorage.getItem('khach_hang_Ten')==null || sessionStorage.getItem('khach_hang_Id')==null)
         {
             TH_dangnhap_dangxuat.innerHTML=`
             <a class="nav-link mr-2" href="/dangnhap">
@@ -358,7 +358,7 @@
                             perm_identity
                         </span>
                     </span>
-                    <span class="d-flex align-items-center mobile-desc">Chào: ${localStorage.getItem('khach_hang_Ten')}</span>
+                    <span class="d-flex align-items-center mobile-desc">Chào: ${sessionStorage.getItem('khach_hang_Ten')}</span>
                 </a>
                 <a class="nav-link ml-2" href="#" id="TH_dang_xuat" onclick="dangxuat()">
                     <span class="hl-label">
@@ -371,9 +371,9 @@
             `
         }
     
-        if(localStorage.getItem('gio_hang') != null)
+        if(sessionStorage.getItem('gio_hang') != null)
         {
-            so_san_pham.innerHTML=JSON.parse(localStorage.getItem('gio_hang')).length
+            so_san_pham.innerHTML=JSON.parse(sessionStorage.getItem('gio_hang')).length
         }
         
     });
@@ -381,11 +381,11 @@
     <script>
 	
 	function dangxuat(){
-		localStorage.removeItem('khach_hang_Ten')
-		localStorage.removeItem('khach_hang_Id')
-		localStorage.removeItem('khach_hang_Email')
-		localStorage.removeItem('khach_hang_Dia_chi')
-		localStorage.removeItem('khach_hang_Dien_thoai')
+		sessionStorage.removeItem('khach_hang_Ten')
+		sessionStorage.removeItem('khach_hang_Id')
+		sessionStorage.removeItem('khach_hang_Email')
+		sessionStorage.removeItem('khach_hang_Dia_chi')
+		sessionStorage.removeItem('khach_hang_Dien_thoai')
 		window.location=window.location.origin
 	}
     </script>
@@ -461,17 +461,17 @@
                     $this.val("Thêm vào giỏ")
                     $this.css({"background-color":"#0091b5"});
                     },1000)
-                var id=$(this).attr("data_id");
+                var id=$(this).attr("id");
                 var gio_hang;
-                if (localStorage.getItem('gio_hang') == null) {
+                if (sessionStorage.getItem('gio_hang') == null) {
                     gio_hang = [];
                 } else {
-                    gio_hang = JSON.parse(localStorage.getItem('gio_hang'));
+                    gio_hang = JSON.parse(sessionStorage.getItem('gio_hang'));
                 }
                 if(gio_hang.find(x=>x.id==id)==undefined)
                 {
                     gio_hang.push({'id':id,'so_luong':1})
-                    localStorage.setItem('gio_hang', JSON.stringify(gio_hang))
+                    sessionStorage.setItem('gio_hang', JSON.stringify(gio_hang))
                     so_san_pham.innerHTML=gio_hang.length
                 }
             }

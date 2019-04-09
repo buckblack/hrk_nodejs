@@ -5,7 +5,7 @@
 <% include thuvien/bodau %>
 <% include layout/thanh_trang_thai %>
 <script>
-    if(localStorage.getItem('khach_hang_Ten')!=null && localStorage.getItem('khach_hang_Id')!=null)
+    if(sessionStorage.getItem('khach_hang_Ten')!=null && sessionStorage.getItem('khach_hang_Id')!=null)
     {
         window.location=window.location.origin
     }

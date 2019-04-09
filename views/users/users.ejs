@@ -3,7 +3,7 @@
 <% include ../layout/nav %>
 <% include ../layout/thanh_trang_thai %>
 <script>
-if(localStorage.getItem('khach_hang_Ten')==null || localStorage.getItem('khach_hang_Id')==null)
+if(sessionStorage.getItem('khach_hang_Ten')==null || sessionStorage.getItem('khach_hang_Id')==null)
     {
         window.location=window.location.origin
     }
@@ -57,17 +57,17 @@ if(localStorage.getItem('khach_hang_Ten')==null || localStorage.getItem('khach_h
 </div>
  <% include ../layout/footer %>
  <script>
-    cap_nhat_ten_khach_hang.value=localStorage.getItem('khach_hang_Ten')
-    cap_nhat_dia_chi.value=localStorage.getItem('khach_hang_Dia_chi')
-    cap_nhat_dien_thoai.value=localStorage.getItem('khach_hang_Dien_thoai')
-    dang_ky_email.value=localStorage.getItem('khach_hang_Email')
+    cap_nhat_ten_khach_hang.value=sessionStorage.getItem('khach_hang_Ten')
+    cap_nhat_dia_chi.value=sessionStorage.getItem('khach_hang_Dia_chi')
+    cap_nhat_dien_thoai.value=sessionStorage.getItem('khach_hang_Dien_thoai')
+    dang_ky_email.value=sessionStorage.getItem('khach_hang_Email')
  </script>
 <script>
   function cap_nhat_thong_tin()
   {
     TH_thong_bao_cap_nhat.innerHTML=`Đang xử lý...`
     var form_data={
-      'id':localStorage.getItem('khach_hang_Id'),
+      'id':sessionStorage.getItem('khach_hang_Id'),
       'ho_ten':cap_nhat_ten_khach_hang.value,
       'dia_chi':cap_nhat_dia_chi.value,
       'dien_thoai':cap_nhat_dien_thoai.value
@@ -78,9 +78,9 @@ if(localStorage.getItem('khach_hang_Ten')==null || localStorage.getItem('khach_h
       data: form_data,
       success: (data) => {
         TH_thong_bao_cap_nhat.innerHTML=data.message
-        localStorage.setItem('khach_hang_Ten',data.ho_ten)
-        localStorage.setItem('khach_hang_Dia_chi',data.dia_chi)
-        localStorage.setItem('khach_hang_Dien_thoai',data.dien_thoai)
+        sessionStorage.setItem('khach_hang_Ten',data.ho_ten)
+        sessionStorage.setItem('khach_hang_Dia_chi',data.dia_chi)
+        sessionStorage.setItem('khach_hang_Dien_thoai',data.dien_thoai)
       }
     })
   }

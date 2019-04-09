@@ -3,7 +3,7 @@
 <% include ../layout/nav %>
 <% include ../layout/thanh_trang_thai %>
 <script>
-    if(localStorage.getItem('khach_hang_Ten')==null || localStorage.getItem('khach_hang_Id')==null)
+    if(sessionStorage.getItem('khach_hang_Ten')==null || sessionStorage.getItem('khach_hang_Id')==null)
     {
         window.location=window.location.origin
     }
@@ -131,7 +131,7 @@ function chi_tiet_don_hang(id){
 $.ajax({
     url: window.location.origin + "/users/don-hang",
     type: "POST",
-    data: {'khach_hang_Id':localStorage.getItem('khach_hang_Id')},
+    data: {'khach_hang_Id':sessionStorage.getItem('khach_hang_Id')},
     success: (data) => {
       TH_don_hang.innerHTML=``
       data.forEach(row => {
