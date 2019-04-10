@@ -32,6 +32,7 @@
         <th>Ngày đặt</th>
         <th>Tổng tiền</th>
         <th>Trạng thái</th>
+        <th>In</th>
         <th>Ghi chú</th>
       </tr>
     </thead>
@@ -76,60 +77,13 @@
   </table>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" onclick="in_hoa_don()">In</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="d-none text-center" id='TH_in_hd'>
-<h1>Tên cửa hàng</h1>
-<p>01234456789  10:AM-22PM</p>
-<p>Địa chỉ</p>
-<div id="id_qrcode" class="my-3"></div>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>STT</th>
-        <th>Tên hàng</th>
-        <th>SL</th>
-        <th>Giá</th>
-        <th>Thành Tiền</th>
-      </tr>
-    </thead>
-    <tbody id="TH_table_in_hd">
-
-    </tbody>
-  </table>
-</div>
  <% include ../layout/footer %>
- <script>
-function tao_qrcode(id)
-{
-  id_qrcode.innerHTML=``
-  var qrcode = new QRCode("id_qrcode", {
-    text:id,
-    width:100,
-    height:100,
-    colorDark:"#000000",
-    colorLight:"#ffffff"
-  });
-}
-function in_hoa_don()
-{
-  const mywindow = window.open('');
-  mywindow.document.write('<html><head><title>In hóa đơn</title>');
-  mywindow.document.write("<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\" type=\"text/css\"/>");
-  mywindow.document.write('</head><body>');
-  mywindow.document.write(document.getElementById('TH_in_hd').innerHTML);
-  mywindow.document.write('</body></html>');
-  mywindow.document.close();
-  mywindow.focus();
-  mywindow.print();
-  mywindow.close();
-}
-</script>
 <script>
 function tong_tien(arr){
   var tien=0;
@@ -150,8 +104,7 @@ function tim_thu_muc(arr){
   })
   });
 }
-function chi_tiet_don_hang(id,ma_hd){
-  tao_qrcode(ma_hd);
+function chi_tiet_don_hang(id){
   var ds_img=[]
   $.ajax({
     url: window.location.origin + "/users/don-hang/chi-tiet",
@@ -159,7 +112,6 @@ function chi_tiet_don_hang(id,ma_hd){
     data: {'id_hoa_don':id},
     success: (data) => {
       TH_chi_tiet_don_hang.innerHTML=``
-      TH_table_in_hd.innerHTML=``
       var dem=1;
       data.forEach(row => {
         ds_img.push({'name':row.san_pham.hinh_anh,'id':row.san_pham._id})
@@ -170,15 +122,6 @@ function chi_tiet_don_hang(id,ma_hd){
             <td>${row.so_luong}</td>
             <td>${row.gia_ban.toLocaleString('en-GB')} VNĐ</td>
             <td>${(Number(row.so_luong)*Number(row.gia_ban)).toLocaleString('en-GB')} VNĐ</td>
-          </tr>
-        `
-        TH_table_in_hd.innerHTML+=`
-          <tr>
-            <td>${dem++}</td>
-            <td>${row.san_pham.ten_sp}</td>
-            <td>${row.so_luong}</td>
-            <td>${row.gia_ban.toLocaleString('en-GB')}</td>
-            <td>${(Number(row.so_luong)*Number(row.gia_ban)).toLocaleString('en-GB')}</td>
           </tr>
         `
         tim_thu_muc(ds_img)
@@ -200,6 +143,7 @@ $.ajax({
             <td>${row.ngay_lap.split('T')[0]}</td>
             <td>${tong_tien(row.chi_tiet).toLocaleString('en-GB')} VNĐ</td>
             <td>${row.trang_thai}</td>
+            <td onclick="in_hoa_don('${row._id}')"><i class="fa fa-print"></i></td>
             <td>${row.ghi_chu}</td>
           </tr>
         `
@@ -207,5 +151,9 @@ $.ajax({
       $('#table_don_hang').DataTable();
     }
 })
+function in_hoa_don(id)
+{
+  window.open('/users/in-hoa-don/'+id, '_blank');
+}
 </script>
 
