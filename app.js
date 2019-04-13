@@ -21,6 +21,7 @@ var maygiatRouter=require('./routes/maygiat');
 var dienthoaiRouter=require('./routes/dienthoai');
 var laptopRouter=require('./routes/laptop');
 var linhkienRouter=require('./routes/linhkien');
+var apiRouter=require('./routes/api');
 var userRouter=require('./routes/users');
 var timkiemRouter=require('./routes/timkiem');
 var adminRouter=require('./routes/admin');
@@ -55,8 +56,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({ extended: false ,limit: '50mb'}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static', express.static(path.join(__dirname, 'public')))
@@ -79,6 +80,7 @@ app.use('/linhkien',linhkienRouter);
 app.use('/users',userRouter);
 app.use('/tim-kiem',timkiemRouter);
 app.use('/admin',adminRouter);
+app.use('/api',apiRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
