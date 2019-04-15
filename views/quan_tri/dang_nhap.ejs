@@ -1,0 +1,77 @@
+<% include layout/head %>
+<script>
+    if(sessionStorage.getItem('qt_Ten')!=null && sessionStorage.getItem('qt_Id')!=null)
+    {
+        window.location=window.location.origin+'/quantri'
+    }
+</script>
+<body>
+    <div class="log-w3">
+        <div class="w3layouts-main text-center">
+            <h2>Đăng nhập</h2>
+            <input type="text" class="ggg form-control" id="dang_nhap_email" name="Email" placeholder="Tên đăng nhập" required="">
+            <input type="password" class="ggg form-control" id="dang_nhap_mat_khau" name="Password" placeholder="Mật khẩu" required="">
+            <div class="clearfix"></div>
+            <input type="button" class="btn btn-primary" id="btn_dang_nhap" value="Đăng nhập" name="login">
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg d-none" id="modal_thongbao" data-toggle="modal" data-target="#modalthongbao">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalthongbao" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body" id="TH_thongbao">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/admin/js/jquery-3.3.1.min.js"></script>
+<script src="/admin/js/bootstrap.min.js"></script>
+<script>
+btn_dang_nhap.onclick=()=>{
+	TH_thongbao.innerHTML='Đang xử lý...'
+	modal_thongbao.click()
+		var form_data={
+			'email':dang_nhap_email.value,
+			'password' : dang_nhap_mat_khau.value,
+		}
+		$.ajax(
+			{
+				url:window.location.origin+"/quantri/dang-nhap",
+				type:"POST",
+				data:form_data,
+				success:(data)=>{
+					data=JSON.parse(data)
+					if(data.errorCode==0)
+					{
+						sessionStorage.setItem('qt_Id',data.qt_Id)
+						sessionStorage.setItem('qt_Ten',data.qt_Ten)
+						sessionStorage.setItem('qt_Email',data.qt_Email)
+						sessionStorage.setItem('qt_Dia_chi',data.qt_Dia_chi)
+						sessionStorage.setItem('qt_Dien_thoai',data.qt_Dien_thoai)
+						sessionStorage.setItem('qt_Gioi_tinh',data.qt_Gioi_tinh)
+						setTimeout(() => {
+							window.location=window.location.origin+"/quantri"
+    					}, 1500);
+					}
+					TH_thongbao.innerHTML=data.message
+				}
+	
+			}
+		)
+	}
+</script>

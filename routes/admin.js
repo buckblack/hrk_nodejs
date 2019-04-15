@@ -11,9 +11,22 @@ cl_thong_bao = 'thong_bao'
 cl_thuong_hieu = 'thuong_hieu'
 cl_loai_san_pham = 'loai_san_pham'
 cl_nha_cung_cap ='nha_cung_cap'
+cl_lien_he ='lien_he'
 
 router.get('/', function (req, res, next) {
-  res.redirect('/admin/dang-nhap');
+  res.redirect('/admin/dashboard');
+});
+
+router.get('/dashboard',async function (req, res, next) {
+  let db = await xl_mongo.Get();
+  db.collection(cl_hoa_don).find({loai_hd:'xuất',trang_thai:'Chưa xác nhận'}).toArray((e,hoa_don)=>{
+    db.collection(cl_nguoi_dung).countDocuments({chuc_vu:'khách hàng'}, (e_kh,tong_kh)=>{
+      db.collection(cl_lien_he).countDocuments({}, (e_lh,tong_lh)=>{
+        res.render('admin/dash_board', {hoa_don:hoa_don,khach_hang:tong_kh,lien_he:tong_lh});
+      })
+    })
+  })
+  
 });
 
 router.get('/dang-nhap', function (req, res, next) {
@@ -122,6 +135,50 @@ router.get('/cap-nhap-san-pham/:id', async function (req, res, next) {
   });
 });
 
+router.get('/hoa-don-nhap/', async function (req, res, next) {
+  var page
+  if (req.query.page == undefined) {
+    page = 1;
+  }
+  else {
+    page = Number(req.query.page)
+  }
+  let db = await xl_mongo.Get();
+  var dk
+  db.collection(cl_hoa_don).aggregate([
+    {
+      $match:{loai_hd:'nhập'}
+    },
+    { $sort: { ngay_lap: -1 } },
+    { $skip: (Number(page)-1) * 5 },
+    {
+      $limit: 5
+    },
+    {
+      $lookup: {
+        from: 'nha_cung_cap',
+        localField: 'nha_cung_cap',
+        foreignField: '_id',
+        as: 'nha_cung_cap'
+      }
+    },
+    {
+      $lookup: {
+        from: 'nguoi_dung',
+        localField: 'nhan_vien',
+        foreignField: '_id',
+        as: 'nhan_vien'
+      }
+    }
+  ]).toArray((err, result) => {
+    db.collection(cl_hoa_don).countDocuments({loai_hd:'nhập'}, (e,tong_hd)=>{
+      var so_trang=Math.ceil(tong_hd/5)
+      res.render('admin/hoa_don_nhap', { hoa_don: result,so_trang:so_trang,page_active:page});
+    })
+    
+  })
+
+});
 router.get('/hoa-don/', async function (req, res, next) {
   var page
   var sort
@@ -378,6 +435,35 @@ router.get('/nhap-hang', async function (req, res, next) {
     });
   });
 });
+router.post('/nhap-hang', async function(req, res, next) {
+  let db = await xl_mongo.Get();
+  var ma_hd;
+  var ct=JSON.parse(req.body.chi_tiet)
+  var chi_tiet=[];
+  ct.forEach(row => {
+    var ct_nhap={
+      'san_pham':ObjectId(row.ma_sp),
+      'so_luong':Number(row.so_luong),
+      'gia_nhap':Number(row.gia_nhap)
+    }
+    db.collection(cl_san_pham).update({'_id':ObjectId(row.ma_sp)},{$inc:{so_luong:Number(row.so_luong)}})
+    chi_tiet.push(ct_nhap)
+  });
+  await db.collection(cl_hoa_don).find({}).toArray((err_hd,res_hd)=>{
+    ma_hd=Number(res_hd.length) +1
+    var hd={
+      'ma_hd':ma_hd,
+      'nha_cung_cap':ObjectId(req.body.ncc_Id),
+      'nhan_vien':ObjectId(req.body.nv_Id),
+      'ngay_lap':new Date(),
+      'loai_hd':'nhập',
+      'chi_tiet':chi_tiet
+    }
+    db.collection(cl_hoa_don).insert(hd,(err_ins,res_ins)=>{
+      res.json({errorCode:0,message:'Nhập hàng thành công'})
+    })
+  })
+});
 router.post('/load-nhap-hang', async function (req, res, next) {
   let db = await xl_mongo.Get();
   await db.collection(cl_san_pham).find({ma_loai:ObjectId(req.body.ma_loai),ma_thuong_hieu:ObjectId(req.body.thuong_hieu),trang_thai:'kinh doanh'}).toArray(function (err_th, result) {
@@ -492,7 +578,6 @@ router.post('/cap-nhat-san-pham', async function (req, res, next) {
   }
   else {
     var hinh = JSON.parse(req.body.hinh);
-    console.log(hinh.thu_muc);
 
     var san_pham = JSON.parse(req.body.san_pham);
     var sp = {
@@ -518,4 +603,50 @@ router.post('/cap-nhat-san-pham', async function (req, res, next) {
 
 });
 
+router.post('/doanh-thu-ngay', async function (req, res, next) {
+  let db = await xl_mongo.Get();
+  var ngay_ht=new Date().toISOString().split('T')[0]
+  var from = new Date(ngay_ht+'T00:00:00.000Z');
+  var to = new Date(ngay_ht+'T23:59:59.999Z');
+  db.collection(cl_hoa_don).find({ 'ngay_lap': {$gte: from, $lt:to},'loai_hd':'xuất'}).toArray((err, result) => {
+    var tongtien=0;
+    result.forEach(row => {
+      row.chi_tiet.forEach(row_ct => {
+        tongtien+=Number(row_ct.so_luong)*Number(row_ct.gia_ban)
+      });
+    });
+    res.json({erroCode:0,doanh_thu:tongtien})
+  })
+  
+});
+
+router.post('/san-pham-ban-trong-ngay', async function (req, res, next) {
+  let db = await xl_mongo.Get();
+  var ngay_ht=new Date().toISOString().split('T')[0]
+  var from = new Date(ngay_ht+'T00:00:00.000Z');
+  var to = new Date(ngay_ht+'T23:59:59.999Z');
+  db.collection(cl_hoa_don).find({ 'ngay_lap': {$gte: from, $lt:to},'loai_hd':'xuất'}).toArray((err, result) => {
+    db.collection(cl_san_pham).aggregate([
+      {
+        $lookup: {
+          from: 'loai_san_pham',
+          localField: 'ma_loai',
+          foreignField: '_id',
+          as: 'loaisp'
+        }
+      }
+    ]).toArray((err_sp,res_sp)=>{
+      res.json({erroCode:0,hoa_don:result,san_pham:res_sp})
+    })
+  })
+  
+});
+
+router.get('/lien-he', async function (req, res, next) {
+  let db = await xl_mongo.Get();
+  db.collection(cl_lien_he).find({}).sort({ngay_tao:-1}).toArray((err, result) => {
+    res.render('admin/lien_he',{lien_he:result})
+  })
+  
+});
 module.exports = router;

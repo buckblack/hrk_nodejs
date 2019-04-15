@@ -10,14 +10,6 @@
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light py-0">
                 <div class="form-group navbar-brand text-center mr-auto mb-0 ml-2">
-                    <select class="form-control" name="" id="loai_hd" onchange="chuyen_trang()">
-                        <option <%if (sort==0) {%>selected<%}%> value="0">Tất cả</option>
-                        <option <%if (sort==1) {%>selected<%}%> value="1">Chưa xác nhận</option>
-                        <option <%if (sort==2) {%>selected<%}%> value="2">Đã xác nhận</option>
-                        <option <%if (sort==3) {%>selected<%}%> value="3">Đã hoàn thành</option>
-                        <option <%if (sort==4) {%>selected<%}%> value="4">Đã hủy</option>
-                    </select>
-
                 </div>
                 <div class="input-group w-auto m-2">
                     <input type="text" class="form-control" id="tim_ma_hd" placeholder="Nhập mã hóa đơn">
@@ -33,18 +25,6 @@
                     <div class="float-right">
                         <div class="dropdown-menu dropdown-menu-right bg-success float-right"
                             aria-labelledby="dropdownMenuButton">
-                            <div class="dropdown-item form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="check_ghichu"
-                                    onclick="check_ghichu()">
-                                <label class="form-check-label">Ghi chú</label>
-                            </div>
-                            <div class="dropdown-item form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="check_status"
-                                    onclick="check_status()">
-                                <label class="
-                                        form-check-label">Trạng
-                                    thái</label>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,12 +36,10 @@
                     <tr>
 
                         <th>Mã Hóa đơn</th>
-                        <th>Tên khách hàng</th>
+                        <th>Tên nhà cung cấp</th>
                         <th>Người lập</th>
                         <th>Ngày</th>
                         <th>Tổng tiền</th>
-                        <th class="table_status d-none">Trạng thái</th>
-                        <th class="table_ghichu d-none">Ghi chú</th>
 
                     </tr>
                 </thead>
@@ -69,12 +47,10 @@
                 <% hoa_don.forEach(row => { %>
                     <tr onclick="show_chi_tiet_hoa_don('<%=row._id%>')" data-toggle="modal" data-target="#modal-detai">
                         <td><%=row.ma_hd%></td>
-                        <td><%=row.khach_hang[0].ho_ten%></td>
+                        <td><%=row.nha_cung_cap[0].ten_ncc%></td>
                         <td><%=row.nhan_vien[0].ho_ten%></td>
                         <td><%=row.ngay_lap%></td>
-                        <td><%=tongtien(row.chi_tiet).toLocaleString('en-GB')%></td>
-                        <td class="table_status d-none"><%=row.trang_thai%></td>
-                        <td class="table_ghichu d-none"><%=row.ghi_chu%></td>
+                        <td><%=tongtiennhap(row.chi_tiet).toLocaleString('en-GB')%></td>
                     </tr>
                 <% }) %>
                     
@@ -83,7 +59,7 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
-                        <a class="page-link" href="/admin/hoa-don?page=1&sort=<%=sort%>" aria-label="Previous">
+                        <a class="page-link" href="/admin/hoa-don-nhap?page=1" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
@@ -94,11 +70,11 @@
                         <% } else { %>
                         <li class="page-item">
                         <%}%>
-                        <a class="page-link" href="/admin/hoa-don?page=<%= index%>&sort=<%=sort%>"><%= index%></a></li>
+                        <a class="page-link" href="/admin/hoa-don-nhap?page=<%= index%>"><%= index%></a></li>
                     <% } %>
                     
                     <li class="page-item">
-                        <a class="page-link" href="/admin/hoa-don?page=<%=so_trang%>&sort=<%=sort%>" aria-label="Next">
+                        <a class="page-link" href="/admin/hoa-don-nhap?page=<%=so_trang%>" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>
@@ -163,8 +139,6 @@
                             </div>
                         </div>
                         <div class="modal-footer" id="TH_modal_detail_footer">
-                                <button type="button" class="btn btn-danger" id="" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-warning" id="" data-dismiss="modal">Xác nhận</button>
                             <button type="button" class="btn btn-secondary" id="btn_close_detai"
                                 data-dismiss="modal">Đóng</button>
 
@@ -172,42 +146,14 @@
                     </div>
                 </div>
             </div>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg d-none" id="btn_thong_bao" data-toggle="modal" data-target="#modal-thong-bao">
-  
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="modal-thong-bao" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thông báo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>
-            <div class="modal-body" id="TH_thong_bao">
-                Đang xử lý....
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
         </div>
     </div>
     <% include layout/footer %>
 <script>
-    function in_hoa_don(mahd){
-        window.open('/users/in-hoa-don/'+mahd, '_blank');
-    }
     function show_chi_tiet_hoa_don(mahd) {
         ma_hd_in=mahd;
         $.ajax({
-            url: window.location.origin +'/tim-kiem/hoa-don',
+            url: window.location.origin +'/tim-kiem/hoa-don-nhap',
             type: "POST",
             data:{'id_hd':mahd},
             success: (data) => {
@@ -220,51 +166,17 @@
                     `
                     return;
                 }
-                if(data[0].trang_thai=="Chưa xác nhận")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                    <button type="button" class="btn btn-danger" id="" onclick="huy_don_hang('${data[0]._id}')">Hủy</button>
-                                <button type="button" class="btn btn-warning" id="" onclick="xac_nhan('${data[0]._id}')">Xác nhận</button>
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
-                if(data[0].trang_thai=="Đã xác nhận")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                    <button type="button" class="btn btn-danger" id="" onclick="huy_sau_xac_nhan('${data[0]._id}')">Hủy</button>
-                                <button type="button" class="btn btn-warning" id="" onclick="xac_nhan_da_thanh_toan('${data[0]._id}')">Xác nhận đã thanh toán</button>
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
-                if(data[0].trang_thai=="Đã thanh toán")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                    <button type="button" class="btn btn-secondary" onclick="in_hoa_don('${data[0]._id}')" id="btn_in_hoa_don"
-                                data-dismiss="modal">Xuất hóa đơn</button>
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
-                if(data[0].trang_thai=="Đã hủy")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
                 var ct = ``;
                 var tongtien = 0;
                 data[0].chi_tiet.forEach(row => {
-                    tongtien += (row.so_luong) * (row.gia_ban);
+                    tongtien += (row.so_luong) * (row.gia_nhap);
                     ct += `
                         <tr>
                             <td>${row.san_pham._id}</td>
                             <td>${row.san_pham.ten_sp}</td>
-                            <td>${row.gia_ban}</td>
+                            <td>${row.gia_nhap.toLocaleString('en-GB')}</td>
                             <td>${row.so_luong}</td>
-                            <td>${((row.so_luong)*(row.gia_ban)).toLocaleString('en-GB')}</td>
+                            <td>${((row.so_luong)*(row.gia_nhap)).toLocaleString('en-GB')}</td>
                         </tr>
                     `
                 });
@@ -278,8 +190,7 @@
                         <div class="h6">Ngày lập: ${data[0].ngay_lap}</div>
                     </div>
                     <div class="row w-100">
-                        <div class="h6 mr-auto">Khách hàng: ${data[0].khach_hang[0].ho_ten}</div>
-                        <div class="h6">Tình trạng:${data[0].trang_thai}</div>
+                        <div class="h6 mr-auto">Nhà cung cấp: ${data[0].nha_cung_cap[0].ten_ncc}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
@@ -292,7 +203,7 @@
                                         <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
-                                        <th>Giá bán</th>
+                                        <th>Giá nhập</th>
                                         <th>Thành tiền</th>
                                     </tr>
                                 </thead>
@@ -302,8 +213,6 @@
                             </table>
                         </div>
                     </div>
-                    <label>Ghi chú:</label>
-                    <input type="text" class="form-control" id="TH_ghi_chu" value="${data[0].ghi_chu}"/>
                 `
             }
         })
@@ -312,7 +221,7 @@
     function show_chi_tiet_tim_kiem() {
         var mahd=tim_ma_hd.value
         $.ajax({
-            url: window.location.origin +'/tim-kiem/hoa-don-ma-tu-tao',
+            url: window.location.origin +'/tim-kiem/hoa-don-nhap-ma-tu-tao',
             type: "POST",
             data:{'ma_hd':mahd},
             success: (data) => {
@@ -325,51 +234,17 @@
                     `
                     return;
                 }
-                if(data[0].trang_thai=="Chưa xác nhận")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                    <button type="button" class="btn btn-danger" id="" onclick="huy_don_hang('${data[0]._id}')">Hủy</button>
-                                <button type="button" class="btn btn-warning" id="" onclick="xac_nhan('${data[0]._id}')">Xác nhận</button>
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
-                if(data[0].trang_thai=="Đã xác nhận")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                    <button type="button" class="btn btn-danger" id="" onclick="huy_sau_xac_nhan('${data[0]._id}')">Hủy</button>
-                                <button type="button" class="btn btn-warning" id="" onclick="xac_nhan_da_thanh_toan('${data[0]._id}')">Xác nhận đã thanh toán</button>
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
-                if(data[0].trang_thai=="Đã thanh toán")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                    <button type="button" class="btn btn-secondary" onclick="in_hoa_don('${data[0]._id}')" id="btn_in_hoa_don"
-                                data-dismiss="modal">Xuất hóa đơn</button>
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
-                if(data[0].trang_thai=="Đã hủy")
-                {
-                    TH_modal_detail_footer.innerHTML=`
-                            <button type="button" class="btn btn-secondary" id="btn_close_detai"
-                                data-dismiss="modal">Đóng</button>
-                    `
-                }
                 var ct = ``;
                 var tongtien = 0;
                 data[0].chi_tiet.forEach(row => {
-                    tongtien += (row.so_luong) * (row.gia_ban);
+                    tongtien += (row.so_luong) * (row.gia_nhap);
                     ct += `
                         <tr>
                             <td>${row.san_pham._id}</td>
                             <td>${row.san_pham.ten_sp}</td>
-                            <td>${row.gia_ban}</td>
+                            <td>${row.gia_nhap.toLocaleString('en-GB')}</td>
                             <td>${row.so_luong}</td>
-                            <td>${((row.so_luong)*(row.gia_ban)).toLocaleString('en-GB')}</td>
+                            <td>${((row.so_luong)*(row.gia_nhap)).toLocaleString('en-GB')}</td>
                         </tr>
                     `
                 });
@@ -383,8 +258,7 @@
                         <div class="h6">Ngày lập: ${data[0].ngay_lap}</div>
                     </div>
                     <div class="row w-100">
-                        <div class="h6 mr-auto">Khách hàng: ${data[0].khach_hang[0].ho_ten}</div>
-                        <div class="h6">Tình trạng:${data[0].trang_thai}</div>
+                        <div class="h6 mr-auto">Nhà cung cấp: ${data[0].nha_cung_cap[0].ten_ncc}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
@@ -397,7 +271,7 @@
                                         <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
-                                        <th>Giá bán</th>
+                                        <th>Giá nhập</th>
                                         <th>Thành tiền</th>
                                     </tr>
                                 </thead>
@@ -407,89 +281,9 @@
                             </table>
                         </div>
                     </div>
-                    <label>Ghi chú:</label>
-                    <input type="text" class="form-control" id="TH_ghi_chu" value="${data[0].ghi_chu}" />
                 `
             }
         })
 
-    }
-    function xac_nhan(mahd)
-    {
-        TH_thong_bao.innerHTML=`Đang xử lý....`
-        btn_thong_bao.click();
-        $.ajax({
-            url: window.location.origin +'/admin/xac-nhan-hoa-don',
-            type: "POST",
-            data:{'ma_hd':mahd,'ghi_chu':TH_ghi_chu.value,'nv_Id':sessionStorage.getItem('nv_Id')},
-            success: (data) => {
-                console.log(data);
-                TH_thong_bao.innerHTML=data.message
-                if (data.errorCode==0) {
-                    setTimeout(() => {
-                        window.location='/admin/hoa-don'
-                    }, 1500);
-                }
-            }
-        })
-    }
-    function xac_nhan_da_thanh_toan(mahd)
-    {
-        TH_thong_bao.innerHTML=`Đang xử lý....`
-        btn_thong_bao.click();
-        $.ajax({
-            url: window.location.origin +'/admin/xac-nhan-da-thanh-toan',
-            type: "POST",
-            data:{'ma_hd':mahd,'ghi_chu':TH_ghi_chu.value,'nv_Id':sessionStorage.getItem('nv_Id')},
-            success: (data) => {
-                console.log(data);
-                TH_thong_bao.innerHTML=data.message
-                if (data.errorCode==0) {
-                    setTimeout(() => {
-                        window.location='/admin/hoa-don'
-                    }, 1500);
-                }
-            }
-        })
-    }
-    function chuyen_trang()
-    {
-        window.location='/admin/hoa-don?page=1&sort='+loai_hd.value
-    }
-    function huy_don_hang(mahd) {
-        TH_thong_bao.innerHTML=`Đang xử lý....`
-        btn_thong_bao.click();
-        $.ajax({
-            url: window.location.origin +'/admin/huy-don-hang',
-            type: "POST",
-            data:{'ma_hd':mahd,'ghi_chu':TH_ghi_chu.value,'nv_Id':sessionStorage.getItem('nv_Id')},
-            success: (data) => {
-                console.log(data);
-                TH_thong_bao.innerHTML=data.message
-                if (data.errorCode==0) {
-                    setTimeout(() => {
-                        window.location='/admin/hoa-don'
-                    }, 1500);
-                }
-            }
-        })
-    }
-    function huy_sau_xac_nhan(mahd) {
-        TH_thong_bao.innerHTML=`Đang xử lý....`
-        btn_thong_bao.click();
-        $.ajax({
-            url: window.location.origin +'/admin/huy-sau-xac-nhan',
-            type: "POST",
-            data:{'ma_hd':mahd,'ghi_chu':TH_ghi_chu.value,'nv_Id':sessionStorage.getItem('nv_Id')},
-            success: (data) => {
-                console.log(data);
-                TH_thong_bao.innerHTML=data.message
-                if (data.errorCode==0) {
-                    setTimeout(() => {
-                        window.location='/admin/hoa-don'
-                    }, 1500);
-                }
-            }
-        })
     }
 </script>
