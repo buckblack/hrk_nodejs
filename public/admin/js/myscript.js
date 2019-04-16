@@ -127,7 +127,7 @@ function thongtinsp(masp, image) {
             </div>
             <div class="row float-right form-inline">
                 <ul class="nav nav-pills nav-fill m-3">
-                        <li class="nav-item" id="btn_capnhat" onclick="capnhatsp('${kq._id}')" data-dismiss="modal" data-toggle="modal" data-target="#modal-update">
+                        <li class="nav-item" id="btn_capnhat" onclick="capnhatsp('${kq._id}')" data-toggle="modal" data-target="#modal-update">
                             <a class="nav-link btn btn-success btn-lg mx-2 mt-2" href="#" 
                                 ><i class="fa fa-check-circle-o"></i> Cập nhật</a>
                         </li>

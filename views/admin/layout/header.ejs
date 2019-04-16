@@ -5,57 +5,56 @@
     }
 </script>
 <body>
-    <section id="container">
-        <!--header start-->
-        <header class="header fixed-top clearfix">
-            <!--logo start-->
-            <div class="brand">
-                <a href="/admin" class="logo mt-2 ml-0">
-                    <img src="/static/images/logo.png" alt="">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/admin">GearStore Admin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item mx-2">
+              <a class="nav-link" href="/admin/san-pham">Sản phẩm</a>
+            </li>
+            <li class="nav-item dropdown mx-2">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Hóa đơn
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/admin/hoa-don">Hóa đơn bán</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/admin/hoa-don-nhap">Hóa đơn nhập</a>
+              </div>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link" href="/admin/nhap-hang">Nhập hàng</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="/admin/lien-he">Liên hệ</a>
+              </li>
+              <li class="nav-item dropdown mx-2">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Thống kê
                 </a>
-                <div class="sidebar-toggle-box">
-                    <div class="fa fa-bars"></div>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/admin/thong-ke-san-pham">Sản phẩm</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/admin/thong-ke-hoa-don">Hóa đơn</a>
                 </div>
-            </div>
-            <!--logo end-->
-            <div class="row">
-                <div class="h1 text-info mt-3 ml-sm-5 ten-nha-hang">GEAR STORE</div>
-                <div class="top-nav ml-auto clearfix">
-                    <!--search & user info start-->
-                    <ul class="nav pull-right top-menu">
-                        <!-- user login dropdown start-->
-                        <li class="dropdown mt-1">
-                            <a data-toggle="dropdown" class="dropdown-toggle py-2 px-1" href="#">
-                            <span id="gioi_tinh_nv">
-                                <img alt="" src="images/1.png">
-                            </span>
-                                
-                                <span class="username" id="TH_username">John Doe</span>
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu extended logout">
-                                <li><a href="/admin/tai-khoan"><i class=" fa fa-suitcase"></i>Tài khoản</a></li>
-                                <li><a href="#" onclick="dangxuat()"><i class="fa fa-key"></i>Đăng xuất</a></li>
-                            </ul>
-                        </li>
-                        <!-- user login dropdown end -->
-
-                    </ul>
-                    <!--search & user info end-->
-                </div>
-            </div>
-
-        </header>
-        <!--header end-->
-        <script>
-            TH_username.innerHTML=sessionStorage.getItem('nv_Ten');
-            if(sessionStorage.getItem('nv_Gioi_tinh')=='nữ')
-            {
-                gioi_tinh_nv.innerHTML=`<img alt="" src="images/1.png">`
-            }
-            else
-            {
-                gioi_tinh_nv.innerHTML=`<img alt="" src="images/2.png">`
-            }
-            
-        </script>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#">Thông báo<span class="badge badge-secondary" id="TH_so_thong_bao">0</span></a>
+              </li>
+          </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item mx-2">
+                    <a class="nav-link" title="Manage" href="/admin/tai-khoan">Chào <span id="TH_username"></span>!</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" title="Manage" href="#" onclick="dangxuat()">Đăng xuất</a>
+                </li>
+            </ul>
+        </div>
+      </nav>
+<script>
+    TH_username.innerHTML=sessionStorage.getItem('nv_Ten')+' ';
+</script>

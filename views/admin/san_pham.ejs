@@ -1,15 +1,11 @@
 <% include layout/head %>
 <% include layout/header %>
-<% include layout/sidebar %>
 <section class="wrapper p-0">
-    <div class="table-agile-info p-0">
+    <div class="">
         <div class="panel panel-default">
-            <div class="panel-heading">
-                Danh sách sản phẩm
-            </div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Sản phẩm</a>
-                <button class="btn btn-success my-2 my-sm-0 mr-3 ml-lg-auto" data-toggle="modal"
+            <nav class="navbar navbar-expand-lg navbar-light bg-white">
+                <a class="h2" href="#">Sản phẩm</a>
+                <button class="btn btn-primary my-2 my-sm-0 mr-3 ml-lg-auto" data-toggle="modal"
                     data-target="#modal-add-new"><i class="fa fa-plus"></i> Thêm mới</button>
                 <div class="dropdown">
                     <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -39,25 +35,27 @@
                 style="width:100%">
                 <thead>
                     <tr>
-                        <th class="table_hinh d-none">Hình</th>
-                        <th class="table_ban d-none">Mã hàng</th>
-                        <th>Tên hàng</th>
-                        <th>Giá bán</th>
-                        <th>Loại hàng</th>
-                        <th>Số lượng</th>
-                        <th class="table_status d-none">Trạng thái</th>
+                        <th class="font-weight-bold text-dark table_hinh d-none">Hình</th>
+                        <th class="font-weight-bold text-dark table_ban d-none">Mã hàng</th>
+                        <th class="font-weight-bold text-dark">Tên hàng</th>
+                        <th class="font-weight-bold text-dark">Giá bán</th>
+                        <th class="font-weight-bold text-dark">Loại hàng</th>
+                        <th class="font-weight-bold text-dark">Số lượng</th>
+                        <th class="font-weight-bold text-dark table_status d-none">Trạng thái</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 <% san_pham.forEach(row => { %>
                     <tr data-toggle="modal" data-target="#modal-detai" onclick="thongtinsp('<%=row._id%>','/static/images/<%=row.loaisp[0].thu_muc_hinh%>/<%=row.hinh_anh%>')">
                         <td class="table_hinh d-none"><img style="width:70px" src="/static/images/<%=row.loaisp[0].thu_muc_hinh%>/<%=row.hinh_anh%>" alt=" " class="img-responsive"/></td>
-                        <td class="table_ban d-none"><%=row._id%></td>
-                        <td><%=row.ten_sp%></td>
-                        <td><%=row.gia_ban.toLocaleString('en-GB')%></td>
-                        <td><%=row.loaisp[0].ten_loai%></td>
-                        <td><%=row.so_luong%></td>
-                        <td class="table_status d-none"><%=row.trang_thai%></td>
+                        <td class="text-darktable_ban d-none"><%=row._id%></td>
+                        <td class="text-dark"><%=row.ten_sp%></td>
+                        <td class="text-dark"><%=row.gia_ban.toLocaleString('en-GB')%></td>
+                        <td class="text-dark"><%=row.loaisp[0].ten_loai%></td>
+                        <td class="text-dark"><%=row.so_luong%></td>
+                        <td class="text-dark table_status d-none"><%=row.trang_thai%></td>
+                        <th class=""><a href="#" onclick="capnhatsp('<%=row._id%>')"  data-toggle="modal" data-target="#modal-update" style="font-size:18px"><i class="fa fa-pencil-square"><i></a></th>
                     </tr>
                 <% }) %>
                     
@@ -265,8 +263,11 @@ customConfig: 'config_binh_luan.js'
 </script>
 <script>
     $('#table_san_pham').DataTable();
-    document.getElementById('table_san_pham_filter').classList.add('w-100')
-    document.getElementById('table_san_pham_filter').classList.add('text-right')
+    document.getElementById('table_san_pham_filter').classList.add('float-right')
+    document.getElementById('table_san_pham_filter').classList.add('form-inline')
+    document.getElementById('table_san_pham_length').classList.add('form-inline')
+        document.getElementById('table_san_pham_filter').classList.add('mb-2')
+    document.getElementById('table_san_pham_length').classList.add('mb-2')
     document.getElementById('table_san_pham_wrapper').classList.add('pb-4')
 </script>
 <script>

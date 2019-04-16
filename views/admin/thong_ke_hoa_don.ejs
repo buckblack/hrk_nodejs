@@ -44,7 +44,8 @@
 
                 </div>
             </div>
-            <table id="table_ds_hoa_don"
+            <div class="border border-secondary border-1 rounded mx-1 p-2 my-4">
+                            <table id="table_ds_hoa_don"
                 class="table table-striped table-bordered bg-light table-hover d-md-table table-responsive-sm">
                 <thead>
                     <tr>
@@ -64,6 +65,8 @@
                     
                 </tbody>
             </table>
+            </div>
+
             <div class="modal fade" id="modal-detai" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
                 aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
@@ -132,7 +135,7 @@
             </div>
         </div>
     </div>
-    <div class="w-auto h-75">
+    <div class="w-auto border border-secondary border-1 rounded mx-1 p-2 my-4">
         <div class="col-sm-12 px-0" id="Th_Bieu_do"></div>
     </div>
     <!-- Button trigger modal -->
@@ -384,8 +387,11 @@
                         {
                             $('#table_ds_hoa_don').DataTable();
                             
-                            document.getElementById('table_ds_hoa_don_filter').classList.add('w-100')
-                            document.getElementById('table_ds_hoa_don_filter').classList.add('text-right')
+                            document.getElementById('table_ds_hoa_don_filter').classList.add('form-inline')
+                            document.getElementById('table_ds_hoa_don_filter').classList.add('float-right')
+                            document.getElementById('table_ds_hoa_don_length').classList.add('form-inline')
+                            document.getElementById('table_ds_hoa_don_filter').classList.add('mb-2')
+                            document.getElementById('table_ds_hoa_don_length').classList.add('mb-2')
                             document.getElementById('table_ds_hoa_don_wrapper').classList.add('pb-4')
                         }
                     });

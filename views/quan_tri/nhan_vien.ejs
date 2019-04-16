@@ -6,66 +6,13 @@
     }
 </script>
 <body>
-    <section id="container">
-        <!--header start-->
-        <header class="header fixed-top clearfix">
-            <!--logo start-->
-            <div class="brand">
-                <a href="/admin" class="logo mt-2 ml-0">
-                    <img src="/static/images/logo.png" alt="">
-                </a>
-                <div class="sidebar-toggle-box">
-                    <div class="fa fa-bars"></div>
-                </div>
-            </div>
-            <!--logo end-->
-            <div class="row">
-                <div class="h1 text-info mt-3 ml-sm-5 ten-nha-hang">GEAR STORE</div>
-                <div class="top-nav ml-auto clearfix">
-                    <!--search & user info start-->
-                    <ul class="nav pull-right top-menu">
-                        <!-- user login dropdown start-->
-                        <li class="dropdown mt-1">
-                            <a data-toggle="dropdown" class="dropdown-toggle py-2 px-1" href="#">
-                            <span id="gioi_tinh_nv">
-                                <img alt="" src="images/1.png">
-                            </span>
-                                
-                                <span class="username" id="TH_username">John Doe</span>
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu extended logout">
-                                <li><a href="/admin/tai-khoan"><i class=" fa fa-suitcase"></i>Tài khoản</a></li>
-                                <li><a href="#" onclick="dangxuat()"><i class="fa fa-key"></i>Đăng xuất</a></li>
-                            </ul>
-                        </li>
-                        <!-- user login dropdown end -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/quantri">GearStore Admin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
 
-                    </ul>
-                    <!--search & user info end-->
-                </div>
-            </div>
-
-        </header>
-        <!--sidebar start-->
-        <aside>
-            <div id="sidebar" class="nav-collapse">
-                <!-- sidebar menu start-->
-                <div class="leftside-navigation">
-                    <ul class="sidebar-menu" id="nav-accordion">
-                        <li>
-                            <a href="/quantri">
-                                <i class="fa fa-user"></i>
-                                <span>Nhân viên</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- sidebar menu end-->
-            </div>
-        </aside>
-        <!--sidebar end-->
-        <section id="main-content">
 <section class="wrapper p-0">
     <div class="table-agile-info p-0">
         <div class="panel panel-default">
@@ -208,29 +155,11 @@
             </div>
         </div>
     </div>
-<!-- footer -->
-<div class="footer">
-    <div class="wthree-copyright">
-        <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
-    </div>
-</div>
-<!-- / footer -->
-</section>
-<!--main content end-->
-</section>
 <% include layout/foot %>
 <script>
-    TH_username.innerHTML=sessionStorage.getItem('qt_Ten');
-    if(sessionStorage.getItem('qt_Gioi_tinh')=='nữ')
-    {
-        gioi_tinh_nv.innerHTML=`<img alt="" src="images/1.png">`
-    }
-    else
-    {
-        gioi_tinh_nv.innerHTML=`<img alt="" src="images/2.png">`
-    }
-    
+    TH_username.innerHTML=sessionStorage.getItem('qt_Ten')+' ';
 </script>
+
 <script>
     function kiem_tra()
     {
@@ -369,7 +298,10 @@
 
 <script>
     $('#table_ds_hoa_don').DataTable();
-    document.getElementById('table_ds_hoa_don_filter').classList.add('w-100')
-    document.getElementById('table_ds_hoa_don_filter').classList.add('text-right')
+    document.getElementById('table_ds_hoa_don_filter').classList.add('form-inline')
+    document.getElementById('table_ds_hoa_don_filter').classList.add('float-right')
+    document.getElementById('table_ds_hoa_don_length').classList.add('form-inline')
+    document.getElementById('table_ds_hoa_don_filter').classList.add('mb-2')
+    document.getElementById('table_ds_hoa_don_length').classList.add('mb-2')
     document.getElementById('table_ds_hoa_don_wrapper').classList.add('pb-4')
 </script>

@@ -7,11 +7,7 @@
             <div class="panel-heading">
                 Danh sách liên hệ
             </div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light py-0">
-                <div class="input-group w-auto m-2">
 
-                </div>
-            </nav>
             <table id="table_lien_he"
                 class="table table-striped table-bordered bg-light table-hover d-md-table table-responsive-sm"
                 style="width:100%">
@@ -44,7 +40,10 @@
     <% include layout/footer %>
 <script>
     $('#table_lien_he').DataTable();
-    document.getElementById('table_lien_he_filter').classList.add('w-100')
-    document.getElementById('table_lien_he_filter').classList.add('text-right')
+    document.getElementById('table_lien_he_filter').classList.add('float-right')
+    document.getElementById('table_lien_he_filter').classList.add('form-inline')
+    document.getElementById('table_lien_he_length').classList.add('form-inline')
+    document.getElementById('table_lien_he_filter').classList.add('mb-2')
+    document.getElementById('table_lien_he_length').classList.add('mb-2')
     document.getElementById('table_lien_he_wrapper').classList.add('pb-4')
 </script>
