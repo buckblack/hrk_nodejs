@@ -4,57 +4,91 @@
         window.location=window.location.origin+'/admin/dang-nhap'
     }
 </script>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/admin">GearStore Admin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item mx-2">
-              <a class="nav-link" href="/admin/san-pham">Sản phẩm</a>
-            </li>
-            <li class="nav-item dropdown mx-2">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Hóa đơn
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/admin/hoa-don">Hóa đơn bán</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/admin/hoa-don-nhap">Hóa đơn nhập</a>
-              </div>
-            </li>
-            <li class="nav-item mx-2">
-                <a class="nav-link" href="/admin/nhap-hang">Nhập hàng</a>
-              </li>
-              <li class="nav-item mx-2">
-                <a class="nav-link" href="/admin/lien-he">Liên hệ</a>
-              </li>
-              <li class="nav-item dropdown mx-2">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Thống kê
+<body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
+    <div class="wrapper" style="height: auto; min-height: 100%;">
+
+        <header class="main-header">
+
+            <!-- Logo -->
+            <a href="/admin" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>G</b>T</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>Gear</b>Store</span>
+            </a>
+
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav style="height: 50px;" class="navbar navbar-expand-sm pt-0 pb-0">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/admin/thong-ke-san-pham">Sản phẩm</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/admin/thong-ke-hoa-don">Hóa đơn</a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu ml-auto">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <li  class="dropdown messages-menu mx-2" >
+                            <a href="/admin/thong-bao" class="" >
+                                <i class="fa fa-envelope-o"></i>
+                                <sup class="badge badge-success" id="TH_so_thong_bao">0</sup>
+                            </a>
+                            <%# <ul class="dropdown-menu">
+                                <li class="header">Bạn có 4 thông báo</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li>
+                                            <!-- start message -->
+                                            <a href="#">
+                                                <h4>
+                                                    Support Team
+                                                </h4>
+                                            </a>
+                                        </li>
+                                        <!-- end message -->
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="/admin/thong-bao">Xem tất cả</a></li>
+                            </ul> %>
+                        </li>
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu mx-2">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="static/public/images/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs" id="TH_username"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        Alexander Pierce - Web Developer
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="/admin/tai-khoan" class="btn btn-default btn-flat">Chi tiết</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" onclick="dangxuat()" class="btn btn-default btn-flat">Đăng xuất</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li class="mx-2">
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
                 </div>
-              </li>
-              <li class="nav-item mx-2">
-                <a class="nav-link" href="#">Thông báo<span class="badge badge-secondary" id="TH_so_thong_bao">0</span></a>
-              </li>
-          </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item mx-2">
-                    <a class="nav-link" title="Manage" href="/admin/tai-khoan">Chào <span id="TH_username"></span>!</a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link" title="Manage" href="#" onclick="dangxuat()">Đăng xuất</a>
-                </li>
-            </ul>
-        </div>
-      </nav>
+
+            </nav>
+        </header>
 <script>
-    TH_username.innerHTML=sessionStorage.getItem('nv_Ten')+' ';
+    TH_username.innerHTML=sessionStorage.getItem('nv_Ten')+'';
 </script>

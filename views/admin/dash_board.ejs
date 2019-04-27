@@ -2,13 +2,13 @@
 <% include layout/header %>
 <% include layout/sidebar %>
 <% include layout/thu_vien %>
-<section class="wrapper p-0">
+
     <div class="">
         <div class="panel panel-default">
             <div class="panel-heading h-auto">
             <input type="date" class="d-none" name="" id="dateFrom">
             <input type="date" class="d-none" name="" id="dateTo">
-                <div class="row bg-none border border-secondary border-1 rounded ">
+                <div class="row bg-none">
                     <div class="col-lg-3 col-md-6 col-sm-12 bg-none my-1" style="height:80px;">
                         <button type="button" class="btn btn-danger h-100 w-100">
                             <h4><i class="fa fa-group"></i> Khách hàng : <%=khach_hang%></h4>
@@ -31,11 +31,37 @@
                     </div>
                 </div>
             </div>
-            <div class="border border-secondary border-1 rounded mx-1 my-4">
-                <h2 class="text-center mt-4">Danh sách hóa đơn chưa xác nhận</h2>
-            <table id="table_ds_hoa_don"
-                class="table table-striped table-bordered bg-light table-hover d-md-table table-responsive-sm">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 w-auto mt-4">
+                    <div class="col-sm-12 px-0" id="Th_Bieu_do"></div>
+                </div>
+                <div class="col-sm-12 col-md-6 w-auto">
+                    <h2 class="text-center mt-4 text-danger">Sản phẩm bán được trong ngày</h2>
+            <table id="table_ds_san_pham"
+                class="table table-striped table-bordered bg-light table-hover d-md-table table-responsive-sm"
+                style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Mã hàng</th>
+                        <th>Tên hàng</th>
+                        <th>Giá bán</th>
+                        <th>Loại hàng</th>
+                        <th>Số lượng bán</th>
+                    </tr>
+                </thead>
+                <tbody id="TH_ds_san_pham">
 
+                </tbody>
+            </table>
+                </div>
+            </div>
+            <div class="col-sm-12 w-auto mt-4">
+                    <div class="col-sm-12 px-0" id="Th_Bieu_do_thang"></div>
+                </div>
+<div class="d-none">
+    <h2 class="text-center mt-4 d-none">Danh sách hóa đơn chưa xác nhận</h2>
+            <table id="table_ds_hoa_don"
+                class="d-none table table-striped table-bordered bg-light table-hover d-md-table table-responsive-sm">
                 <thead>
 
                     <tr>
@@ -56,33 +82,7 @@
                 <% }) %>
                 </tbody>
             </table>
-            </div>
-            <div class="border border-secondary border-1 rounded mx-1 my-4">
-                <div class="w-auto h-100">
-                <div class="col-sm-12 px-0" id="Th_Bieu_do"></div>
-            </div>
-            </div>
-            <div class="border border-secondary border-1 rounded mx-1 my-4">
-            <h2 class="text-center mt-4">Sản phẩm bán được trong ngày</h2>
-            <table id="table_ds_san_pham"
-                class="table table-striped table-bordered bg-light table-hover d-md-table table-responsive-sm"
-                style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Mã hàng</th>
-                        <th>Tên hàng</th>
-                        <th>Giá bán</th>
-                        <th>Loại hàng</th>
-                        <th>Số lượng bán</th>
-                    </tr>
-                </thead>
-                <tbody id="TH_ds_san_pham">
-
-                </tbody>
-            </table>
-            </div>
-            
-
+</div>
         </div>
     </div>
     </div>
@@ -408,74 +408,136 @@
         })
     }
 </script>
-    <script>
-        function xep_theo_so_luong_ban(arr) {
-        arr = arr.sort((a, b) => {
-            return parseInt(b.so_luong_ban) - parseInt(a.so_luong_ban)
-        })
-        return arr;
-        }
-    </script>
-    <script>
-        function tinh_so_luong(Danh_sach) {
-            var so_luong = 0;
-            Danh_sach.forEach(row => {
-                so_luong += row.so_luong;
-            });
-            return so_luong;
-        }
-        var ds_hoa_don;
-        var ds_sp
-        $.ajax({
-            url: window.location.origin+'/admin/san-pham-ban-trong-ngay',
-            type: "POST",
-            success: (data) => {
-                ds_hoa_don = data.hoa_don;
-                //xuất table sản phẩm
-                var dem=0;
-                data.san_pham.forEach(row_sp => {
-                    dem++;
-                    var soluong=0;
-                    //bắt đầu duyệt hóa đơn
-                    ds_hoa_don.forEach(row_hd => {
-                    var dem_ct=0;
-                    row_hd.chi_tiet.forEach(row_hd_ct => {
-                        dem_ct++
-                        if(row_sp._id.toString().trim()==row_hd_ct.san_pham.toString().trim())
-                        {
-                            soluong+=Number(row_hd_ct.so_luong)
-                        }
-                        if(dem_ct==row_hd.chi_tiet.length)
-                        {
-                            row_sp.so_luong_ban=soluong;
-                        }
-                    });
-                    });
-                    //kết thúc duyệt hóa đơn
-                    if(dem==data.san_pham.length)
+<script>
+    function xep_theo_so_luong_ban(arr) {
+    arr = arr.sort((a, b) => {
+        return parseInt(b.so_luong_ban) - parseInt(a.so_luong_ban)
+    })
+    return arr;
+    }
+</script>
+<script>
+    function tinh_so_luong(Danh_sach) {
+        var so_luong = 0;
+        Danh_sach.forEach(row => {
+            so_luong += row.so_luong;
+        });
+        return so_luong;
+    }
+    var ds_hoa_don;
+    var ds_sp
+    $.ajax({
+        url: window.location.origin+'/admin/san-pham-ban-trong-ngay',
+        type: "POST",
+        success: (data) => {
+            ds_hoa_don = data.hoa_don;
+            //xuất table sản phẩm
+            var dem=0;
+            data.san_pham.forEach(row_sp => {
+                dem++;
+                var soluong=0;
+                //bắt đầu duyệt hóa đơn
+                ds_hoa_don.forEach(row_hd => {
+                var dem_ct=0;
+                row_hd.chi_tiet.forEach(row_hd_ct => {
+                    dem_ct++
+                    if(row_sp._id.toString().trim()==row_hd_ct.san_pham.toString().trim())
                     {
-                        ds_sp=xep_theo_so_luong_ban(data.san_pham).filter(x=>x.so_luong_ban>0);
-                        var instance=1
-                        TH_ds_san_pham.innerHTML+=``
-                        ds_sp.forEach(row => {
-                            instance++;
-                            TH_ds_san_pham.innerHTML+=`
-                                <tr>
-                                    <td>${row._id}</td>
-                                    <td>${row.ten_sp}</td>
-                                    <td>${(row.gia_ban).toLocaleString('en-GB')}</td>
-                                    <td>${row.loaisp[0].ten_loai}</td>
-                                    <td>${row.so_luong_ban==undefined?0:row.so_luong_ban}</td>
-                                </tr>
-                            `
-                        });
-                            $('#table_ds_san_pham').DataTable();
-                            document.getElementById('table_ds_san_pham_filter').classList.add('d-none')
-                            document.getElementById('table_ds_san_pham_wrapper').classList.add('pb-4')
-                            document.getElementById('table_ds_san_pham_length').classList.add('d-none')
-                            document.getElementById('table_ds_san_pham_info').classList.add('d-none')
+                        soluong+=Number(row_hd_ct.so_luong)
+                    }
+                    if(dem_ct==row_hd.chi_tiet.length)
+                    {
+                        row_sp.so_luong_ban=soluong;
                     }
                 });
+                });
+                //kết thúc duyệt hóa đơn
+                if(dem==data.san_pham.length)
+                {
+                    ds_sp=xep_theo_so_luong_ban(data.san_pham).filter(x=>x.so_luong_ban>0);
+                    var instance=1
+                    TH_ds_san_pham.innerHTML+=``
+                    ds_sp.forEach(row => {
+                        instance++;
+                        TH_ds_san_pham.innerHTML+=`
+                            <tr>
+                                <td>${row._id}</td>
+                                <td>${row.ten_sp}</td>
+                                <td>${(row.gia_ban).toLocaleString('en-GB')}</td>
+                                <td>${row.loaisp[0].ten_loai}</td>
+                                <td>${row.so_luong_ban==undefined?0:row.so_luong_ban}</td>
+                            </tr>
+                        `
+                    });
+                        $('#table_ds_san_pham').DataTable();
+                        document.getElementById('table_ds_san_pham_filter').classList.add('d-none')
+                        document.getElementById('table_ds_san_pham_wrapper').classList.add('pb-4')
+                        document.getElementById('table_ds_san_pham_length').classList.add('d-none')
+                        document.getElementById('table_ds_san_pham_info').classList.add('d-none')
+                }
+            });
+        }
+    })
+</script>
+<script>
+Highcharts.chart('Th_Bieu_do_thang', {
+    chart: {
+        type: 'area'
+    },
+    title: {
+        text: 'Thống kê doanh thu theo tháng'
+    },
+    subtitle: {
+        text: 'từ đến'
+    },
+    xAxis: {
+        allowDecimals: false,
+        labels: {
+            formatter: function () {
+                return this.value; // clean, unformatted number for year
             }
-        })
-    </script>
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Tổng tiền theo tháng'
+        },
+        labels: {
+            formatter: function () {
+                return this.value / 1000 + 'k';
+            }
+        }
+    },
+    tooltip: {
+        pointFormat: '{series.name} had stockpiled <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+    },
+    plotOptions: {
+        area: {
+            pointStart: 1940,
+            marker: {
+                enabled: false,
+                symbol: 'circle',
+                radius: 2,
+                states: {
+                    hover: {
+                        enabled: true
+                    }
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Tổng tiền',
+        data: [
+            null, null, null, null, null, 6, 11, 32, 110, 235,
+            369, 640, 1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468,
+            20434, 24126, 27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342,
+            26662, 26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
+            24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586, 22380,
+            21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950, 10871, 10824,
+            10577, 10527, 10475, 10421, 10358, 10295, 10104, 9914, 9620, 9326,
+            5113, 5113, 4954, 4804, 4761, 4717, 4368, 4018
+        ]
+    }]
+});
+</script>

@@ -1,12 +1,12 @@
 <% include layout/head %>
-<body>
-    <div class="log-w3">
-        <div class="w3layouts-main text-center">
-            <h2>Đăng nhập</h2>
-            <input type="email" class="ggg form-control" id="dang_nhap_email" name="Email" placeholder="E-MAIL" required="">
-            <input type="password" class="ggg form-control" id="dang_nhap_mat_khau" name="Password" placeholder="PASSWORD" required="">
+<body class="h-100">
+    <div class="row h-100 justify-content-center">
+        <div class="col-sm-12 col-md-6 col-lg-4 text-center  ">
+            <h2 class="mt-5">Đăng nhập</h2>
+            <input type="email" class="form-control my-2" id="dang_nhap_email" name="Email" placeholder="E-MAIL" required="">
+            <input type="password" class="form-control my-2" id="dang_nhap_mat_khau" name="Password" placeholder="PASSWORD" required="">
             <div class="clearfix"></div>
-            <input type="button" class="btn btn-primary" id="btn_dang_nhap" value="Đăng nhập" name="login">
+            <input type="button" class="btn btn-primary my-2" id="btn_dang_nhap" value="Đăng nhập" name="login">
         </div>
     </div>
 </body>
@@ -59,7 +59,7 @@ btn_dang_nhap.onclick=()=>{
 						sessionStorage.setItem('nv_Dien_thoai',data.nv_Dien_thoai)
 						sessionStorage.setItem('nv_Gioi_tinh',data.nv_Gioi_tinh)
 						setTimeout(() => {
-							window.location=window.location.origin+"/admin/san-pham"
+							window.location=window.location.origin+"/admin"
     					}, 1500);
 					}
 					TH_thongbao.innerHTML=data.message
