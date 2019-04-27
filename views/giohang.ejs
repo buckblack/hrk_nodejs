@@ -2,6 +2,12 @@
 <% include layout/header %>
 <% include layout/nav %>
 <% include thuvien/bodau %>
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AVUfsPM-lD0pNOEgqKgrWtgk7ozNJkGqTQDHWYnmmzSZZYa8-NuIZ4aUkPSL3izJ6kHviRMmwNctNR7x">
+</script>
+<script>
+	var tong_tien_gio_hang=0;
+</script>
 <!-- checkout -->
 <div class="container page-container">
 	<div class="page home-page custom-container" id="checkout">
@@ -28,8 +34,9 @@
 					id="tinh_tong_tien">100000000</span> VNĐ</td>
 		</tr>
 	</table>
-	<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_xac_nhan">Tiến hành đặt hàng</button>
-	<div class="checkout-left float-right">
+	<button type="button" class="btn btn-outline-primary mb-3" data-toggle="modal" data-target="#modal_xac_nhan">Tiến hành đặt hàng COD</button>
+	<div style="width:218px" class="float-right" id="paypal-button-container"></div>
+	<div class="checkout-left">
 		<div class="checkout-right-basket"> <a href="."><span class="glyphicon glyphicon-menu-left"
 					aria-hidden="true"></span>Tiếp tục mua sắm</a> </div>
 	</div>
@@ -81,6 +88,55 @@
 		</div>
 	</div>
 </div>
+<!-- //paypal -->
+<script>
+function thanh_toan_paypal(tien)
+{	
+	document.getElementById('paypal-button-container').innerHTML=``
+	var ty_gia;
+	var thanh_tien=0;
+	$.ajax({
+		url: "http://data.fixer.io/api/latest?access_key=260134a075aba712b62366771b4e88a2",
+		type: "GET",
+		success: (data) => {
+			ty_gia=data.rates.VND/data.rates.USD
+			thanh_tien=parseFloat(tien/ty_gia).toFixed(2)
+			//console.log(thanh_tien)
+		}
+	})
+	paypal.Buttons({
+		createOrder: function(data, actions) {
+		if(sessionStorage.getItem('khach_hang_Ten')==null)
+		{
+			window.location=window.location.origin + "/dangnhap"
+			return;
+		}
+		return actions.order.create({
+			purchase_units: [{
+			amount: {
+				value: thanh_tien
+			}
+			}]
+		});
+		},
+		onApprove: function(data, actions) {
+		return actions.order.capture().then(function(details) {
+			dat_hang();
+			// Call your server to save the transaction
+			return fetch('/paypal-transaction-complete', {
+			method: 'post',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				orderID: data.orderID
+			})
+			});
+		});
+		}
+	}).render('#paypal-button-container');
+}
+</script>
 <!-- //checkout -->
 <script>
 	var tongtien = 0;
@@ -97,9 +153,11 @@
 				row.so_luong = Number(sl)
 				tongtien += Number(sl) * Number(giaban)
 				tinh_tong_tien.innerHTML = tongtien.toLocaleString('en-GB')
+				tong_tien_gio_hang=tongtien
 			}
 		});
 		sessionStorage.setItem('gio_hang', JSON.stringify(gio_hang))
+		thanh_toan_paypal(tongtien)
 	}
 
 	function dat_hang()
@@ -165,6 +223,7 @@
 				var kq = JSON.parse(data)
 				tongtien += Number(soluong) * Number(kq[0].gia_ban)
 				tinh_tong_tien.innerHTML = tongtien.toLocaleString('en-GB')
+				tong_tien_gio_hang=tongtien
 				TH_gio_hang.innerHTML += `
 				<tr>
 					<td class="invert">${stt}</td>
@@ -181,6 +240,7 @@
 					</td>
 				</tr>
 				`
+				thanh_toan_paypal(tongtien)
 			}
 
 		})

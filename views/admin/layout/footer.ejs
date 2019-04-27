@@ -264,7 +264,7 @@
     var socket = io();
     socket.on('server-send-mesage', function (msg) {
       var notice = new PNotify({
-        title: 'Click Notice',
+        title: 'Thông báo',
         text: 'Bạn có hóa đơn mới: '+msg,
         type:'info'
       });
