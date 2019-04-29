@@ -38,7 +38,7 @@
                                         </div>
                                         <div class="inputs d-flex flex-row">
                                             <span class="ml-3 forgot-password">
-                                                <a href="/passwordrecovery">Quên mật khẩu?</a>
+                                                <a href="#" data-toggle="modal" data-target="#modal-quen-pass">Quên mật khẩu?</a>
                                             </span>
                                         </div>
                                     </div>
@@ -93,7 +93,59 @@
 			</div>
 		</div>
 	</div>
+
+    <!-- Modal quên mật khẩu-->
+    <div class="modal fade" id="modal-quen-pass" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Quên mật khẩu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="">Email</label>
+                      <input type="email" class="form-control" name="" id="email_quen_pass" aria-describedby="emailHelpId" placeholder="">
+                      <small id="emailHelpId" class="form-text text-muted"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="quen_mat_khau()">Lấy lại mật khẩu</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <% include layout/footer %>
+<script>
+    function quen_mat_khau()
+    {
+        emailHelpId.innerHTML=`Đang xử lý...`
+        var form_data={
+			'email':email_quen_pass.value
+		}
+		$.ajax(
+			{
+				url:window.location.origin+"/users/quenmatkhau",
+				type:"POST",
+				data:form_data,
+				success:(data)=>{
+                    //console.log(data)
+					//data=JSON.parse(data)
+					emailHelpId.innerHTML=data.message
+				}
+	
+			}
+		)
+    }
+	$("#dang_nhap_email,#dang_nhap_mat_khau").keyup(function(event) {
+		if (event.keyCode === 13) {
+			$("#btn_dang_nhap").click();
+		}
+	});
+</script>
 <script>
 btn_dang_nhap.onclick=()=>{
 	TH_thongbao.innerHTML='Đang xử lý...'

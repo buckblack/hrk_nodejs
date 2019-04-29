@@ -3,6 +3,7 @@
     {
         window.location=window.location.origin+'/admin/dang-nhap'
     }
+
 </script>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
     <div class="wrapper" style="height: auto; min-height: 100%;">
@@ -64,8 +65,8 @@
                                     <img src="/static/images/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        <span id="TH_ten_email">Alexander Pierce - Web Developer</span>
+                                        <small id="TH_diachi_dienthoai">Member since Nov. 2012</small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -91,4 +92,6 @@
         </header>
 <script>
     TH_username.innerHTML=sessionStorage.getItem('nv_Ten')+'';
+    TH_ten_email.innerHTML=sessionStorage.getItem("nv_Email");
+    TH_diachi_dienthoai.innerHTML=sessionStorage.getItem("nv_Dia_chi") +"-"+sessionStorage.getItem("nv_Dien_thoai");
 </script>

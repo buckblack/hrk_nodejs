@@ -34,7 +34,7 @@
 					id="tinh_tong_tien">100000000</span> VNĐ</td>
 		</tr>
 	</table>
-	<button type="button" class="btn btn-outline-primary mb-3" data-toggle="modal" data-target="#modal_xac_nhan">Tiến hành đặt hàng COD</button>
+	<button type="button" class="btn btn-outline-primary mb-3" data-toggle="modal" data-target="#modal_xac_nhan">Đặt hàng COD</button>
 	<div style="width:218px" class="float-right" id="paypal-button-container"></div>
 	<div class="checkout-left">
 		<div class="checkout-right-basket"> <a href="."><span class="glyphicon glyphicon-menu-left"
@@ -104,7 +104,6 @@ function thanh_toan_paypal(tien)
 			//console.log(thanh_tien)
 		}
 	})*/
-	thanh_tien=parseFloat(tien/23000).toFixed(2)
 	paypal.Buttons({
 		createOrder: function(data, actions) {
 		if(sessionStorage.getItem('khach_hang_Ten')==null)
@@ -115,7 +114,7 @@ function thanh_toan_paypal(tien)
 		return actions.order.create({
 			purchase_units: [{
 			amount: {
-				value: thanh_tien
+				value: parseFloat(tien/23000).toFixed(2)
 			}
 			}]
 		});

@@ -42,6 +42,13 @@
 <script src="/admin/js/jquery-3.3.1.min.js"></script>
 <script src="/admin/js/bootstrap.min.js"></script>
 <script>
+	$("#dang_nhap_email,#dang_nhap_mat_khau").keyup(function(event) {
+		if (event.keyCode === 13) {
+			$("#btn_dang_nhap").click();
+		}
+	});
+</script>
+<script>
 btn_dang_nhap.onclick=()=>{
 	TH_thongbao.innerHTML='Đang xử lý...'
 	modal_thongbao.click()
