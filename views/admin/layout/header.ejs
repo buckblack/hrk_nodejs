@@ -1,9 +1,8 @@
 <script>
-    if(sessionStorage.getItem('nv_Ten')==null || sessionStorage.getItem('nv_Id')==null)
+    if(localStorage.getItem('nv_Ten')==null || localStorage.getItem('nv_Id')==null)
     {
         window.location=window.location.origin+'/admin/dang-nhap'
     }
-
 </script>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
     <div class="wrapper" style="height: auto; min-height: 100%;">
@@ -91,7 +90,7 @@
             </nav>
         </header>
 <script>
-    TH_username.innerHTML=sessionStorage.getItem('nv_Ten')+'';
-    TH_ten_email.innerHTML=sessionStorage.getItem("nv_Email");
-    TH_diachi_dienthoai.innerHTML=sessionStorage.getItem("nv_Dia_chi") +"-"+sessionStorage.getItem("nv_Dien_thoai");
+    TH_username.innerHTML=localStorage.getItem('nv_Ten')+'';
+    TH_ten_email.innerHTML=localStorage.getItem("nv_Email");
+    TH_diachi_dienthoai.innerHTML=localStorage.getItem("nv_Dia_chi") +"-"+localStorage.getItem("nv_Dien_thoai");
 </script>

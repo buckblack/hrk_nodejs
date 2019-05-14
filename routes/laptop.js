@@ -61,7 +61,7 @@ router.get('/apple/', async function(req, res, next) {
   </ul>
   `
   db.collection(cl_san_pham).find({ma_loai:ObjectId("5be914d6c4741b03ecfa622c"),ma_thuong_hieu:ObjectId("5be90a47c4741b03ecfa6221"),trang_thai:'kinh doanh'}).toArray((err,laptop)=>{
-    res.render('sanpham',{tieude:'Gear Srore | Laptop Apple',trangthai:'Laptop / Apple',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
+    res.render('sanpham',{tieude:'Gear Srore | Laptop Apple',trangthai:'Laptop &rsaquo; Apple',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
   });
 });
 
@@ -92,7 +92,7 @@ router.get('/dell/', async function(req, res, next) {
   </ul>
   `
   db.collection(cl_san_pham).find({ma_loai:ObjectId("5be914d6c4741b03ecfa622c"),ma_thuong_hieu:ObjectId("5be90a6dc4741b03ecfa6224"),trang_thai:'kinh doanh'}).toArray((err,laptop)=>{
-    res.render('sanpham',{tieude:'Gear Srore | Laptop Dell',trangthai:'Laptop / Dell',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
+    res.render('sanpham',{tieude:'Gear Srore | Laptop Dell',trangthai:'Laptop &rsaquo; Dell',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
   });
 });
 
@@ -123,7 +123,7 @@ router.get('/asus/', async function(req, res, next) {
   </ul>
   `
   db.collection(cl_san_pham).find({ma_loai:ObjectId("5be914d6c4741b03ecfa622c"),ma_thuong_hieu:ObjectId("5be90a64c4741b03ecfa6223"),trang_thai:'kinh doanh'}).toArray((err,laptop)=>{
-    res.render('sanpham',{tieude:'Gear Srore | Laptop Asus',trangthai:'Laptop / Asus',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
+    res.render('sanpham',{tieude:'Gear Srore | Laptop Asus',trangthai:'Laptop &rsaquo; Asus',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
   });
 });
 
@@ -154,7 +154,7 @@ router.get('/msi/', async function(req, res, next) {
   </ul>
   `
   db.collection(cl_san_pham).find({ma_loai:ObjectId("5be914d6c4741b03ecfa622c"),ma_thuong_hieu:ObjectId("5be90a82c4741b03ecfa6226"),trang_thai:'kinh doanh'}).toArray((err,laptop)=>{
-    res.render('sanpham',{tieude:'Gear Srore | Laptop MSI',trangthai:'Laptop / MSI',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
+    res.render('sanpham',{tieude:'Gear Srore | Laptop MSI',trangthai:'Laptop &rsaquo; MSI',sanpham:JSON.stringify(laptop),thumuc:'laptop',sublist_laptop:sublist_laptop});
   });
 
 });

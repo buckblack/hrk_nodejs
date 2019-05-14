@@ -147,12 +147,17 @@ function them_1_gio_hang(id)
     var btn=document.getElementById('add_'+id)
         if(btn.value=="Thêm vào giỏ")
         {
-            btn.style.backgroundColor="#9C3"
-            btn.value="✔ đã thêm"
+            //btn.style.backgroundColor="#9C3"
+            //btn.value="✔ đã thêm"
+            $(".btnAdd").css({"background-color":"#9C3"})
+            $(".btnAdd").val("✔ đã thêm")
             setTimeout(function(){
-                btn.value="Thêm vào giỏ"
-                btn.style.backgroundColor="#0091b5"
-                },1000)
+                $(".btnAdd").css({"background-color":"#0091b5"})
+                $(".btnAdd").val("Thêm vào giỏ")
+                //btn.value="Thêm vào giỏ"
+                //btn.style.backgroundColor="#0091b5"
+                },1000
+            )
             var gio_hang;
             if (sessionStorage.getItem('gio_hang') == null) {
                 gio_hang = [];

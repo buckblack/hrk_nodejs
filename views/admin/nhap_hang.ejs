@@ -136,10 +136,10 @@
     {
         TH_ds_nhap.innerHTML = ``;
             var nhap_hang;
-            if (sessionStorage.getItem('nhap_hang') == null) {
+            if (localStorage.getItem('nhap_hang') == null) {
                 nhap_hang = [];
             } else {
-                nhap_hang = JSON.parse(sessionStorage.getItem('nhap_hang'));
+                nhap_hang = JSON.parse(localStorage.getItem('nhap_hang'));
             }
             var tongtien=0;
             nhap_hang.forEach(row => {
@@ -172,10 +172,10 @@
         }
         
         var nhap_hang;
-        if (sessionStorage.getItem('nhap_hang') == null) {
+        if (localStorage.getItem('nhap_hang') == null) {
             nhap_hang = [];
         } else {
-            nhap_hang = JSON.parse(sessionStorage.getItem('nhap_hang'));
+            nhap_hang = JSON.parse(localStorage.getItem('nhap_hang'));
         }
         if(nhap_hang.find(x=>x.ma_sp==TH_ds_san_pham.value)==undefined)
         {
@@ -191,7 +191,7 @@
                 'gia_ban':TH_gia_ban.value.trim()
             }
             nhap_hang.push(sp)
-            sessionStorage.setItem('nhap_hang', JSON.stringify(nhap_hang))
+            localStorage.setItem('nhap_hang', JSON.stringify(nhap_hang))
             TH_ds_nhap.innerHTML = ``;
             tongtien=0
             nhap_hang.forEach(row => {
@@ -216,31 +216,31 @@
     }
     function xoa_nhap_hang() {
 		if (confirm("Xác nhận xoá danh sách nhập hàng")) {
-			sessionStorage.removeItem('nhap_hang')
+			localStorage.removeItem('nhap_hang')
 			window.location = "/admin/nhap-hang"
 		}
 
 	}
 
 	function xoa_1_nhap_hang(id) {
-		nhap_hang = JSON.parse(sessionStorage.getItem('nhap_hang'));
+		nhap_hang = JSON.parse(localStorage.getItem('nhap_hang'));
 		nhap_hang = nhap_hang.filter(x => x.ma_sp != id)
 		if (nhap_hang.length == 0) {
-			sessionStorage.removeItem('nhap_hang')
+			localStorage.removeItem('nhap_hang')
 		} else {
-			sessionStorage.setItem('nhap_hang', JSON.stringify(nhap_hang))
+			localStorage.setItem('nhap_hang', JSON.stringify(nhap_hang))
         }
         window.location = "/admin/nhap-hang"
     }
     
     function nhap_hang()
 	{
-        if(sessionStorage.getItem('nhap_hang')==null || sessionStorage.getItem('nhap_hang')==undefined)
+        if(localStorage.getItem('nhap_hang')==null || localStorage.getItem('nhap_hang')==undefined)
         {
             alert('Chưa tạo đơn nhập hàng')
             return;
         }
-		if(sessionStorage.getItem('nv_Ten')==null)
+		if(localStorage.getItem('nv_Ten')==null)
 		{
 			window.location=window.location.origin + "/admin/dang-nhap"
 		}
@@ -248,11 +248,11 @@
 		{
             TH_thong_bao.innerHTML=`Đang xử lý...`
             btn_thong_bao.click();
-			var ct=JSON.parse(sessionStorage.getItem('nhap_hang'))
+			var ct=JSON.parse(localStorage.getItem('nhap_hang'))
 			var form_data={
-            'nv_Id':sessionStorage.getItem('nv_Id'),
+            'nv_Id':localStorage.getItem('nv_Id'),
             'ncc_Id': TH_ncc.value,
-			'chi_tiet' : sessionStorage.getItem('nhap_hang')
+			'chi_tiet' : localStorage.getItem('nhap_hang')
 			}
 			$.ajax({
 			url: window.location.origin + "/admin/nhap-hang",
@@ -262,7 +262,7 @@
 				if(data.errorCode==0)
 				TH_thong_bao.innerHTML=`Nhập hàng thành công`
 				setTimeout(() => {
-					sessionStorage.removeItem('nhap_hang')
+					localStorage.removeItem('nhap_hang')
 					window.location = "/admin/nhap-hang"
 				}, 1500);
 				

@@ -8,8 +8,6 @@ cl_san_pham = 'san_pham'
 cl_nguoi_dung = 'nguoi_dung'
 cl_thuong_hieu = 'thuong_hieu'
 cl_loai_san_pham='loai_san_pham'
-cl_nha_cung_cap='nha_cung_cap'
-
 
 //đăng nhập
 router.post('/dang-nhap', async function (req, res, next) {
@@ -43,9 +41,42 @@ router.post('/dang-nhap', async function (req, res, next) {
   })
 });
 
+//đổi mật khẩu
+router.put('/doimatkhau',async function(req, res, next) {
+  let db = await xl_mongo.Get();
+  var dk={'_id':ObjectId(req.body.id),'password':md5(req.body.mat_khau_hien_tai)}
+  await db.collection(cl_nguoi_dung).find(dk).toArray((err,result)=>{
+    if(result.length!=1)
+    {
+      var kq={'errorCode':1, 'message':'Mật khẩu hiện tại không đúng'}
+      res.json(JSON.stringify(kq))
+    }
+    else
+    {
+      if(result[0].trang_thai=='khóa')
+      {
+        var kq={'errorCode':2, 'message':'Tài khoản đã bị khóa'}
+        res.json(JSON.stringify(kq))
+      }
+      else
+      {
+        db.collection(cl_nguoi_dung).update({'_id':ObjectId(req.body.id)},{$set:{'password':md5(req.body.mat_khau_moi)}},(loi,ket_qua)=>{
+          var kq={
+            'errorCode':0,
+            'message':'Đổi mật khẩu thành công',
+          }
+          res.json(kq)
+        })
+      }
+      
+    }
+    
+  })
+});
+
 //thêm loại sản phẩm mới
 router.post('/them-loai-san-pham',async function(req,res,next){
-  var loai={'ten_loai':req.body.ten_loai,'thu_muc_hinh':req.body.thu_muc_hinh}
+  var loai={'ten_loai':req.body.ten_loai,'thu_muc_hinh':req.body.thu_muc}
   let db=await xl_mongo.Get();
   await db.collection(cl_loai_san_pham).insert(loai,(err,result)=>{
     if(err)
@@ -64,90 +95,6 @@ router.post('/them-loai-san-pham',async function(req,res,next){
   })
 });
 
-//thêm thương hiệu
-router.post('/them-thuong-hieu',async function(req,res,next){
-  var thuong_hieu={'ten_thuong_hieu':req.body.ten_thuong_hieu,'hinh':req.body.hinh}
-  let db=await xl_mongo.Get();
-  await db.collection(cl_thuong_hieu).insert(thuong_hieu,(err,result)=>{
-    if(err)
-    {
-      var kq={'errorCode':1,'message':'Không thêm được'}
-      res.json(kq)
-    }
-    else
-    {
-      var kq={
-        'errorCode':0,
-        'message':'Thêm thành công',
-      }
-      res.json(kq)
-    }
-  })
-});
-
-//lấy nhà cung cấp
-router.get('/lay-nha-cung-cap', async function (req, res, next) {
-  let db = await xl_mongo.Get();
-  db.collection(cl_nha_cung_cap).find({}).toArray((err, result) => {
-    if (result.length == 0) {
-      var kq = {
-        'errorCode': 1,
-        'message': 'Không tìm thấy'
-      }
-      res.json(kq)
-    }
-    else {
-      var kq = {
-        'errorCode': 0,
-        'data':result
-      }
-      res.json(kq)
-    }
-  })
-});
-
-//thêm nhà cung cấp
-router.post('/them-nha-cung-cap',async function(req,res,next){
-  var nha_cung_cap={'ten_ncc':req.body.ten_ncc,'dia_chi':req.body.dia_chi,'dien_thoai':req.body.dien_thoai,'email':req.body.email}
-  let db=await xl_mongo.Get();
-  await db.collection(cl_nha_cung_cap).insert(nha_cung_cap,(err,result)=>{
-    if(err)
-    {
-      var kq={'errorCode':1,'message':'Không thêm được'}
-      res.json(kq)
-    }
-    else
-    {
-      var kq={
-        'errorCode':0,
-        'message':'Thêm thành công',
-      }
-      res.json(kq)
-    }
-  })
-});
-
-//lấy danh sách người dùng
-router.get('/lay-nguoi-dung', async function (req, res, next) {
-  let db = await xl_mongo.Get();
-  var dk={'trang_thai':'đang hoạt động'}
-  db.collection(cl_nguoi_dung).find(dk).toArray((err, result) => {
-    if (result.length == 0) {
-      var kq = {
-        'errorCode': 1,
-        'message': 'Không tìm thấy'
-      }
-      res.json(kq)
-    }
-    else {
-      var kq = {
-        'errorCode': 0,
-        'data':result
-      }
-      res.json(kq)
-    }
-  })
-});
 
 //lấy thương hiệu
 router.get('/lay-thuong-hieu', async function (req, res, next) {
@@ -322,44 +269,6 @@ router.get('/lay-hoa-don/:id', async function (req, res, next) {
   })
 });
 
-//lấy sản phẩm
-router.get('/lay-san-pham', async function (req, res, next) {
-  let db = await xl_mongo.Get();
-  await db.collection(cl_san_pham).aggregate([
-  {
-    $lookup: {
-      from: 'loai_san_pham',
-      localField: 'ma_loai',
-      foreignField: '_id',
-      as: 'loaisp'
-    }
-  },
-  {
-    $lookup: {
-      from: 'thuong_hieu',
-      localField: 'ma_thuong_hieu',
-      foreignField: '_id',
-      as: 'thuonghieu'
-    }
-  }
-  ]).toArray((err, result) => {
-    if (result.length == 0) {
-      var kq = {
-        'errorCode': 1,
-        'message': 'Không tìm thấy'
-      }
-      res.json(kq)
-    }
-    else {
-      var kq = {
-        'errorCode': 0,
-        'message': '',
-        'data': result
-      }
-      res.json(kq)
-    }
-  })
-});
 
 //lấy 1 sản phẩm
 router.get('/lay-san-pham/:id', async function (req, res, next) {

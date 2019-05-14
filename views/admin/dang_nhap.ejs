@@ -1,4 +1,10 @@
 <% include layout/head %>
+<script>
+	if(localStorage.getItem('nv_Ten')!=null & localStorage.getItem('nv_Id')!=null)
+    {
+        window.location=window.location.origin+'/admin/'
+    }
+</script>
 <title>Gear Store Admin | Đăng nhập</title>
 <body class="h-100">
     <div class="row h-100 justify-content-center">
@@ -60,12 +66,12 @@ btn_dang_nhap.onclick=()=>{
 					data=JSON.parse(data)
 					if(data.errorCode==0)
 					{
-						sessionStorage.setItem('nv_Id',data.nv_Id)
-						sessionStorage.setItem('nv_Ten',data.nv_Ten)
-						sessionStorage.setItem('nv_Email',data.nv_Email)
-						sessionStorage.setItem('nv_Dia_chi',data.nv_Dia_chi)
-						sessionStorage.setItem('nv_Dien_thoai',data.nv_Dien_thoai)
-						sessionStorage.setItem('nv_Gioi_tinh',data.nv_Gioi_tinh)
+						localStorage.setItem('nv_Id',data.nv_Id)
+						localStorage.setItem('nv_Ten',data.nv_Ten)
+						localStorage.setItem('nv_Email',data.nv_Email)
+						localStorage.setItem('nv_Dia_chi',data.nv_Dia_chi)
+						localStorage.setItem('nv_Dien_thoai',data.nv_Dien_thoai)
+						localStorage.setItem('nv_Gioi_tinh',data.nv_Gioi_tinh)
 						setTimeout(() => {
 							window.location=window.location.origin+"/admin"
     					}, 1500);
