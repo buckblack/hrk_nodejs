@@ -91,13 +91,6 @@ function kiem_tra_thong_tin_dang_ky()
         return false
     }
 
-    if(ten_dang_nhap.value.trim()=="")
-    {
-        alert("Vui lòng nhập tên đăng nhập")
-        ten_dang_nhap.focus()
-        return false
-    }
-
     if(email.value.trim()=="")
     {
         alert("Vui lòng nhập email")
